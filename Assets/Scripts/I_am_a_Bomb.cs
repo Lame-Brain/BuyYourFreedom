@@ -4,8 +4,28 @@ using UnityEngine;
 
 public class I_am_a_Bomb : MonoBehaviour
 {
-    void Update()
+    public bool isArmed;
+    public float fuseLength;
+    public float damage;
+    public GameObject Splosion_Prefab;
+
+    public void Arm_Bomb()
     {
-        
+        isArmed = true;
+        StartCoroutine(FuseTimer(fuseLength));
+    }
+
+    public void Disarm_Bomb()
+    {
+        isArmed = false;
+        transform.position = GameManager.POOL.position;
+    }
+
+    IEnumerator FuseTimer(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameObject _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
+        _go.GetComponent<Boom>().damage = damage;
+        Disarm_Bomb();
     }
 }
