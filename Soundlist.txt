@@ -1,2 +1,10 @@
+Hero Object
 1. Slash Sound
 2. Dash Sound
+3. Fire Arrow
+4. Plop Bomb
+
+MUSIC
+Menu Music
+Game Music
+

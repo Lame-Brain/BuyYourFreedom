@@ -14,7 +14,12 @@ public class I_am_a_Player : MonoBehaviour
     bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection;
     Directions _facing, _old_facing, _new_facing;
     Rigidbody2D _rigidBody;
+    float _invincibilityTimer;
 
+    private void Start()
+    {
+        Init_Play();
+    }
     public void Init_Play()
     {
         _facing = Directions.North;
@@ -22,6 +27,8 @@ public class I_am_a_Player : MonoBehaviour
         transform.rotation = Quaternion.identity;
         _rigidBody = gameObject.GetComponent<Rigidbody2D>();
         selectedWeapon = Weapons.Sword;
+        _invincibilityTimer = 0f;
+        StartCoroutine(Invincible_Timer());
     }
 
     private void Update()
@@ -78,6 +85,33 @@ public class I_am_a_Player : MonoBehaviour
         //Slashing Sound
         //if(selectedWeapon == Weapons.Sword && _changedDirection) Play Slashing AudioClip
 
+        //Button 1 (fire selected weapon)
+        if(_button1 && selectedWeapon == Weapons.Arrow)
+        {
+            //figure out which arrow in pool is next
+            //place arrow at player position and angle it
+            //tell it to begin its flight
+            _button1 = false;
+            //PLAY FIRE ARROW SOUND
+        }
+        if(_button1 && selectedWeapon == Weapons.Bomb)
+        {
+            //figure out which bomb in pool is next
+            //place bomb at player and angle it
+            //move the bomb back a bit
+            //lit it
+            _button2 = false;
+            //PLAY BOMB PLOP SOUND
+        }
+
+        //Button 2 (change weapon selection)
+        if (_button2)
+        {
+            if (selectedWeapon == Weapons.Sword) { selectedWeapon = Weapons.Arrow; _button2 = false; }
+            if (selectedWeapon == Weapons.Arrow && _button2) { selectedWeapon = Weapons.Bomb; _button2 = false; }
+            if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; }
+        }
+
         //Weapon Selection
         if(selectedWeapon == Weapons.Sword)
         {
@@ -97,5 +131,44 @@ public class I_am_a_Player : MonoBehaviour
             transform.Find("Arrow").gameObject.SetActive(false);
             transform.Find("Bomb").gameObject.SetActive(true);
         }
+
+        //Escape Button: Quit Panel
+        if (_Esc)
+        {
+            _button3 = false;
+            GameManager.PAUSED = true;
+            GameManager.GAME.PopQuitMenu();
+        }
+
+        //Update check for death
+        if (GameManager.HEALTH <= 0) PlayerDies();
+    }
+
+    //Collision
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(_invincibilityTimer == 0)
+        {
+            //if(valid source of damage)
+           //{
+                //Apply Damage
+                //Fling player with RigidBody
+                //Trigger Invincibility Timer
+                //Check for Death if (GameManager.HEALTH <= 0) PlayerDies();
+            //}
+        }
+    }
+
+    //Handle Player Death
+    public void PlayerDies()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+    }
+
+    IEnumerator Invincible_Timer()
+    {
+        _invincibilityTimer = GameManager.GAME.InvicibibleTime;
+        for(float _c = _invincibilityTimer; _c > 0f; _c -= GameManager.GAME.InvincibleRateOfDecay) yield return new WaitForEndOfFrame();
+        _invincibilityTimer = 0;
     }
 }
