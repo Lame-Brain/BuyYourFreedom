@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class I_am_a_CharacterSprite : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject myBody;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (myBody != null) this.transform.position = myBody.transform.position;
     }
 }
