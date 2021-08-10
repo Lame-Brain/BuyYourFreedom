@@ -33,10 +33,9 @@ public class I_am_a_Bomb : MonoBehaviour
         Disarm_Bomb();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Hit by " + collision.collider.gameObject.tag);
-        if(collision.collider.gameObject.tag == "Splosion")
+        if(collision.gameObject.tag == "Splosion")
         {
             GameObject _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
             _go.GetComponent<Boom>().damage = damage;

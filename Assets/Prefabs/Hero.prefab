@@ -51,10 +51,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myFace: {fileID: 785822248055357861}
   canMove: 1
-  speed: 1
-  dashModifier: 10
+  speed: 3
+  dashModifier: 3
   arrow_reloadTime: 0.5
-  bomb_reloadTime: 2
+  bomb_reloadTime: 1
   selectedWeapon: 1
 --- !u!50 &785822247025132704
 Rigidbody2D:
@@ -381,9 +381,9 @@ GameObject:
   - component: {fileID: 785822248154568543}
   - component: {fileID: 785822248154568540}
   - component: {fileID: 785822248154568541}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Sword
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

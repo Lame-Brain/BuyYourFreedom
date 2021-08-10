@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
             BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
             RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
-            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+            //RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
         }
     }
 }
