@@ -5,13 +5,13 @@ using UnityEngine;
 public class I_am_a_Player : MonoBehaviour
 {
     public enum Directions { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest }
-    public enum Weapons { Sword, Arrow, Bomb }
+    public enum Weapons { None, Sword, Arrow, Bomb }
     public GameObject myFace;
     public bool canMove;
-    public float speed, dashModifier;
+    public float speed, dashModifier, arrow_reloadTime, bomb_reloadTime;
     public Weapons selectedWeapon;
 
-    bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection;
+    bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection, _ready_arrow, _ready_bomb;
     Directions _facing, _old_facing, _new_facing;
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
@@ -33,6 +33,8 @@ public class I_am_a_Player : MonoBehaviour
         _arrow_index = -1;
         _bomb_index = -1;
         GameManager.GAME.Reset_Pools();
+        StartCoroutine(ReloadArrow());
+        StartCoroutine(ReloadBomb());
     }
 
     private void Update()
@@ -90,27 +92,28 @@ public class I_am_a_Player : MonoBehaviour
         //if(selectedWeapon == Weapons.Sword && _changedDirection) Play Slashing AudioClip
 
         //Button 1 (fire selected weapon)
-        if(_button1 && selectedWeapon == Weapons.Arrow)
+        if(_button1 && selectedWeapon == Weapons.Arrow && _ready_arrow)
         {
-
-            //figure out which arrow in pool is next
-            _arrow_index++;
-            if (_arrow_index > GameManager.GAME.ArrowPool.Count) _arrow_index = 0;
-
-            //place arrow at player position and angle it
+            for (int _i = 0; _i < GameManager.GAME.ArrowPool.Count; _i++) if (!GameManager.GAME.ArrowPool[_i].GetComponent<I_am_an_Arrow>().inFlight) _arrow_index = _i;
+            Debug.Log("Arrow Index is now " + _arrow_index);
             GameManager.GAME.ArrowPool[_arrow_index].transform.position = transform.position;
             GameManager.GAME.ArrowPool[_arrow_index].transform.rotation = transform.rotation;
-            
-            //tell it to begin its flight
+            GameManager.GAME.ArrowPool[_arrow_index].GetComponent<I_am_an_Arrow>().Start_Flight();
+            StartCoroutine(ReloadArrow());
             _button1 = false;
+            Debug.Log("This arrow was fired: " + _arrow_index);
             //PLAY FIRE ARROW SOUND
         }
-        if(_button1 && selectedWeapon == Weapons.Bomb)
+        if(_button1 && selectedWeapon == Weapons.Bomb && _ready_bomb)
         {
             //figure out which bomb in pool is next
-            //place bomb at player and angle it
-            //move the bomb back a bit
-            //lit it
+            _bomb_index++;
+            if (_bomb_index >= GameManager.GAME.BombPool.Count - 1) _bomb_index = 0;
+            GameManager.GAME.BombPool[_bomb_index].transform.position = transform.position;
+            GameManager.GAME.BombPool[_bomb_index].transform.rotation = transform.rotation;
+            GameManager.GAME.BombPool[_bomb_index].transform.Translate(Vector2.down * 0.5f);
+            GameManager.GAME.BombPool[_bomb_index].GetComponent<I_am_a_Bomb>().Arm_Bomb();
+            StartCoroutine(ReloadBomb());
             _button2 = false;
             //PLAY BOMB PLOP SOUND
         }
@@ -124,6 +127,12 @@ public class I_am_a_Player : MonoBehaviour
         }
 
         //Weapon Selection
+        if(selectedWeapon == Weapons.None)
+        {
+            transform.Find("Sword").gameObject.SetActive(false);
+            transform.Find("Arrow").gameObject.SetActive(false);
+            transform.Find("Bomb").gameObject.SetActive(false);
+        }
         if(selectedWeapon == Weapons.Sword)
         {
             transform.Find("Sword").gameObject.SetActive(true);
@@ -133,14 +142,14 @@ public class I_am_a_Player : MonoBehaviour
         if(selectedWeapon == Weapons.Arrow)
         {
             transform.Find("Sword").gameObject.SetActive(false);
-            transform.Find("Arrow").gameObject.SetActive(true);
+            transform.Find("Arrow").gameObject.SetActive(_ready_arrow);
             transform.Find("Bomb").gameObject.SetActive(false);
         }
         if(selectedWeapon == Weapons.Bomb)
         {
             transform.Find("Sword").gameObject.SetActive(false);
             transform.Find("Arrow").gameObject.SetActive(false);
-            transform.Find("Bomb").gameObject.SetActive(true);
+            transform.Find("Bomb").gameObject.SetActive(_ready_bomb);
         }
 
         //Escape Button: Quit Panel
@@ -181,5 +190,18 @@ public class I_am_a_Player : MonoBehaviour
         _invincibilityTimer = GameManager.GAME.InvicibibleTime;
         for(float _c = _invincibilityTimer; _c > 0f; _c -= GameManager.GAME.InvincibleRateOfDecay) yield return new WaitForEndOfFrame();
         _invincibilityTimer = 0;
+    }
+
+    IEnumerator ReloadArrow()
+    {
+        _ready_arrow = false;
+        yield return new WaitForSeconds(arrow_reloadTime);
+        _ready_arrow = true;
+    }
+    IEnumerator ReloadBomb()
+    {
+        _ready_bomb = false;
+        yield return new WaitForSeconds(bomb_reloadTime);
+        _ready_bomb = true;
     }
 }

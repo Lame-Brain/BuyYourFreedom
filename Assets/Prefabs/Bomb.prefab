@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 623721801344347315}
   - component: {fileID: 2986839801614393929}
   - component: {fileID: 5781482810157241211}
+  - component: {fileID: 4704090646937037620}
+  - component: {fileID: 1673548997472442604}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Bomb
@@ -96,6 +98,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isArmed: 0
-  fuseLength: 0
-  damage: 0
+  fuseLength: 5
+  damage: 5
   Splosion_Prefab: {fileID: 4023528732974388869, guid: 834367d8ba283754a9c15e11974e26dd, type: 3}
+--- !u!58 &4704090646937037620
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940857289512072936}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.13274872}
+  serializedVersion: 2
+  m_Radius: 0.35897285
+--- !u!50 &1673548997472442604
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940857289512072936}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

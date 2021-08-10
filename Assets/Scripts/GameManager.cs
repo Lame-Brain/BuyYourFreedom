@@ -31,16 +31,6 @@ public class GameManager : MonoBehaviour
         BOMBS = 0;
         GOLD = 0;
         POINTS = 0;
-
-        //Initialize object pools
-        int _Pool_Amount = 25;
-        for(int _i = 0; _i < _Pool_Amount; _i++)
-        {
-            ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
-            BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
-            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
-            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
-        }
     }
 
     private void Update()
@@ -75,12 +65,16 @@ public class GameManager : MonoBehaviour
         ArrowPool.Clear();
         BombPool.Clear();
         RockPool.Clear();
-        
-        //Make new pools
-        ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
-        BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
-        RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
-        RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+
+        //Initialize object pools
+        int _Pool_Amount = 25;
+        for (int _i = 0; _i < _Pool_Amount; _i++)
+        {
+            ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
+            BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
+            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+        }
     }
 }
 

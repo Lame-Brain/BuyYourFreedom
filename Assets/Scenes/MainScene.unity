@@ -478,6 +478,12 @@ MonoBehaviour:
   QuitPanel: {fileID: 643660083}
   InvicibibleTime: 5
   InvincibleRateOfDecay: 1
+  ArrowPool: []
+  BombPool: []
+  RockPool: []
+  arrow_prefab: {fileID: 4525558016649039361, guid: cd575a83d3eef4c4db04211be25430a6, type: 3}
+  bomb_prefab: {fileID: 8940857289512072936, guid: e4b1fc3ac316f35489934bf10a7b6630, type: 3}
+  rock_prefab: {fileID: 9113539080451349024, guid: 53c166d4dca389a439eba28139e60549, type: 3}
 --- !u!4 &683364869
 Transform:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8899115165270308637}
   - component: {fileID: 4680142658058885284}
   - component: {fileID: 7038404591107620567}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock
   m_TagString: Rock
   m_Icon: {fileID: 0}
@@ -113,6 +113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inFlight: 0
-  flightTime: 2
-  speed: 2
+  flightTime: 4
+  speed: 8
   damage: 1

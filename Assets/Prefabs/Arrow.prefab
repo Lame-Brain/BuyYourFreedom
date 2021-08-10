@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4383005802337581203}
   - component: {fileID: 6222221813988136283}
   - component: {fileID: 3338040305405411322}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arrow
   m_TagString: Arrow
   m_Icon: {fileID: 0}
@@ -123,6 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inFlight: 0
-  flightTime: 2
-  speed: 3
+  flightTime: 4
+  speed: 10
   damage: 1

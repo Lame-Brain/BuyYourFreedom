@@ -24,8 +24,23 @@ public class I_am_a_Bomb : MonoBehaviour
     IEnumerator FuseTimer(float delay)
     {
         yield return new WaitForSeconds(delay);
-        GameObject _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
-        _go.GetComponent<Boom>().damage = damage;
+        GameObject _go;
+        if (isArmed)
+        {
+            _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
+            _go.GetComponent<Boom>().damage = damage;
+        }
         Disarm_Bomb();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Hit by " + collision.collider.gameObject.tag);
+        if(collision.collider.gameObject.tag == "Splosion")
+        {
+            GameObject _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
+            _go.GetComponent<Boom>().damage = damage;
+            Disarm_Bomb();
+        }
     }
 }

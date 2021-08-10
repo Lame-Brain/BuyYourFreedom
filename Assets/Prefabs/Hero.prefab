@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 785822247025132707}
   - component: {fileID: 785822247025132704}
   - component: {fileID: 785822247025132705}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hero_Body
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -53,7 +53,9 @@ MonoBehaviour:
   canMove: 1
   speed: 1
   dashModifier: 10
-  selectedWeapon: 0
+  arrow_reloadTime: 0.5
+  bomb_reloadTime: 2
+  selectedWeapon: 1
 --- !u!50 &785822247025132704
 Rigidbody2D:
   serializedVersion: 4
@@ -102,7 +104,7 @@ GameObject:
   - component: {fileID: 785822247404788286}
   - component: {fileID: 785822247404788287}
   - component: {fileID: 785822247404788284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785822247857245590}
   - component: {fileID: 785822247857245591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +285,7 @@ GameObject:
   - component: {fileID: 785822248055357882}
   - component: {fileID: 785822248055357880}
   - component: {fileID: 785822248055357883}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hero_Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +381,7 @@ GameObject:
   - component: {fileID: 785822248154568543}
   - component: {fileID: 785822248154568540}
   - component: {fileID: 785822248154568541}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +490,7 @@ GameObject:
   - component: {fileID: 785822248583291239}
   - component: {fileID: 785822248583291237}
   - component: {fileID: 785822248583291236}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 785822248836679995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
