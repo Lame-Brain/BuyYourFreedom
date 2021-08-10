@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject QuitPanel;
     public float InvicibibleTime, InvincibleRateOfDecay;
+    [HideInInspector] public List<GameObject> ArrowPool = new List<GameObject>();
+    [HideInInspector] public List<GameObject> BombPool = new List<GameObject>();
+    [HideInInspector] public List<GameObject> RockPool = new List<GameObject>();
+    public GameObject arrow_prefab, bomb_prefab, rock_prefab;
 
     private void Awake()
     {
@@ -20,7 +24,23 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        //Default player
+        HEALTH = 25;
+        ARMOR = 0;
+        ARROWS = 6;
+        BOMBS = 0;
+        GOLD = 0;
+        POINTS = 0;
+
+        //Initialize object pools
+        int _Pool_Amount = 25;
+        for(int _i = 0; _i < _Pool_Amount; _i++)
+        {
+            ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
+            BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
+            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+            RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+        }
     }
 
     private void Update()
@@ -42,6 +62,25 @@ public class GameManager : MonoBehaviour
     {
         QuitPanel.SetActive(true);
         //Switch music to menu music
+    }
+
+    public void Reset_Pools()
+    {
+        //clean up existing projectiles
+        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Arrow")) Destroy(_go);
+        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Bomb")) Destroy(_go);
+        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Rock")) Destroy(_go);
+
+        //Clear lists
+        ArrowPool.Clear();
+        BombPool.Clear();
+        RockPool.Clear();
+        
+        //Make new pools
+        ArrowPool.Add(Instantiate(arrow_prefab, POOL.position, Quaternion.identity));
+        BombPool.Add(Instantiate(bomb_prefab, POOL.position, Quaternion.identity));
+        RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
+        RockPool.Add(Instantiate(rock_prefab, POOL.position, Quaternion.identity));
     }
 }
 

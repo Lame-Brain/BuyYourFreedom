@@ -15,6 +15,7 @@ public class I_am_a_Player : MonoBehaviour
     Directions _facing, _old_facing, _new_facing;
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
+    int _arrow_index, _bomb_index;
 
     private void Start()
     {
@@ -29,6 +30,9 @@ public class I_am_a_Player : MonoBehaviour
         selectedWeapon = Weapons.Sword;
         _invincibilityTimer = 0f;
         StartCoroutine(Invincible_Timer());
+        _arrow_index = -1;
+        _bomb_index = -1;
+        GameManager.GAME.Reset_Pools();
     }
 
     private void Update()
@@ -88,8 +92,15 @@ public class I_am_a_Player : MonoBehaviour
         //Button 1 (fire selected weapon)
         if(_button1 && selectedWeapon == Weapons.Arrow)
         {
+
             //figure out which arrow in pool is next
+            _arrow_index++;
+            if (_arrow_index > GameManager.GAME.ArrowPool.Count) _arrow_index = 0;
+
             //place arrow at player position and angle it
+            GameManager.GAME.ArrowPool[_arrow_index].transform.position = transform.position;
+            GameManager.GAME.ArrowPool[_arrow_index].transform.rotation = transform.rotation;
+            
             //tell it to begin its flight
             _button1 = false;
             //PLAY FIRE ARROW SOUND
