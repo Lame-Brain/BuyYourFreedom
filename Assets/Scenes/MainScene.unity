@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followPlayer: 1
-  cameraMoveSpeed: 0.25
+  cameraMoveSpeed: 1
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
