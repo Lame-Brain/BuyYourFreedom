@@ -203,7 +203,6 @@ public class I_am_a_Player : MonoBehaviour
         {
             //Play player ouch sound
         }
-        Debug.Log("Health left " + GameManager.HEALTH);
     }
 
     //Handle Player Death

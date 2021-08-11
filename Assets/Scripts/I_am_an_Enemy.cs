@@ -89,10 +89,14 @@ public class I_am_an_Enemy : MonoBehaviour
                 health -= collision.collider.GetComponent<I_am_a_Sword>().damage;
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
-                //GetComponent<Rigidbody2D>().AddForce(dir * 4000);
-                _rigidBody.AddForce(dir * 4000);
-                StartCoroutine(Invincible_Timer()); 
-                if (health <= 0) EnemyDies();
+                StartCoroutine(Invincible_Timer());
+                if (health <= 0)
+                {
+                    EnemyDies();
+                } else
+                {
+                    _rigidBody.AddForce(dir * 3000);
+                }
             }
             if (collision.collider.gameObject.tag == "Arrow")
             {

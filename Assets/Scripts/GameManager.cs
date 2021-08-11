@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<GameObject> BombPool = new List<GameObject>();
     [HideInInspector] public List<GameObject> RockPool = new List<GameObject>();
     public GameObject arrow_prefab, bomb_prefab, rock_prefab;
-
+    public GameObject[] floor, wall, monster;
     private void Awake()
     {
         GAME = this;
@@ -31,6 +31,22 @@ public class GameManager : MonoBehaviour
         BOMBS = 0;
         GOLD = 0;
         POINTS = 0;
+
+        //build level
+        for (int _y = -10; _y < 11; _y++)
+        {
+            for (int _x = -10; _x < 11; _x++)
+            {
+                Instantiate(floor[Random.Range(0, floor.Length)], new Vector3(_x, _y, 0), Quaternion.identity);
+            }
+        }
+        for (int _i = -11; _i < 12; _i++)
+        {
+            Instantiate(wall[Random.Range(0, wall.Length)], new Vector3(_i, -11, 0), Quaternion.identity);
+            Instantiate(wall[Random.Range(0, wall.Length)], new Vector3(_i, 11, 0), Quaternion.identity);
+            Instantiate(wall[Random.Range(0, wall.Length)], new Vector3(-11, _i, 0), Quaternion.identity);
+            Instantiate(wall[Random.Range(0, wall.Length)], new Vector3(11, _i, 0), Quaternion.identity);
+        }
     }
 
     private void Update()
