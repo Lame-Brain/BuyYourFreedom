@@ -95,13 +95,11 @@ public class I_am_a_Player : MonoBehaviour
         if(_button1 && selectedWeapon == Weapons.Arrow && _ready_arrow)
         {
             for (int _i = 0; _i < GameManager.GAME.ArrowPool.Count; _i++) if (!GameManager.GAME.ArrowPool[_i].GetComponent<I_am_an_Arrow>().inFlight) _arrow_index = _i;
-            Debug.Log("Arrow Index is now " + _arrow_index);
             GameManager.GAME.ArrowPool[_arrow_index].transform.position = transform.position;
             GameManager.GAME.ArrowPool[_arrow_index].transform.rotation = transform.rotation;
             GameManager.GAME.ArrowPool[_arrow_index].GetComponent<I_am_an_Arrow>().Start_Flight();
             StartCoroutine(ReloadArrow());
             _button1 = false;
-            Debug.Log("This arrow was fired: " + _arrow_index);
             //PLAY FIRE ARROW SOUND
         }
         if(_button1 && selectedWeapon == Weapons.Bomb && _ready_bomb)

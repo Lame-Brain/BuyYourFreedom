@@ -163,9 +163,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   myFace: {fileID: 2524285636108515495}
-  health: 0
-  speed: 0
-  damage: 0
+  health: 1
+  speed: 1
+  damage: 1
+  delayBetweenShots: 1
 --- !u!50 &2888511194951383755
 Rigidbody2D:
   serializedVersion: 4
