@@ -3,6 +3,8 @@ Hero Object
 2. Dash Sound
 3. Fire Arrow
 4. Plop Bomb
+5. armor tink
+6. player ouch
 
 MUSIC
 Menu Music

@@ -29,7 +29,7 @@ public class I_am_a_Player : MonoBehaviour
         _rigidBody = gameObject.GetComponent<Rigidbody2D>();
         selectedWeapon = Weapons.Sword;
         _invincibilityTimer = 0f;
-        StartCoroutine(Invincible_Timer());
+        //StartCoroutine(Invincible_Timer());
         _arrow_index = -1;
         _bomb_index = -1;
         GameManager.GAME.Reset_Pools();
@@ -169,13 +169,28 @@ public class I_am_a_Player : MonoBehaviour
     {
         if(_invincibilityTimer == 0)
         {
-            //if(valid source of damage)
-           //{
-                //Apply Damage
-                //Fling player with RigidBody
-                //Trigger Invincibility Timer
-                //Check for Death if (GameManager.HEALTH <= 0) PlayerDies();
-            //}
+            if(collision.collider.gameObject.tag == "Splosion")
+            {
+                PlayerDamage(collision.collider.GetComponent<Boom>().damage);
+                StartCoroutine(Invincible_Timer());
+                if (GameManager.HEALTH <= 0) PlayerDies();
+            }
+        }
+    }
+    //Handle Player Damage
+    public void PlayerDamage(float _damage)
+    {
+        float _adjustedDamage = _damage;
+        _adjustedDamage -= GameManager.ARMOR; if (_adjustedDamage < 0) _adjustedDamage = 0;
+        GameManager.ARMOR -= _damage; if (GameManager.ARMOR < 0) GameManager.ARMOR = 0;
+        GameManager.HEALTH -= _adjustedDamage;
+        if(_adjustedDamage == 0)
+        {
+            //Play armor tink sound
+        }
+        else
+        {
+            //Play player ouch sound
         }
     }
 
@@ -188,7 +203,9 @@ public class I_am_a_Player : MonoBehaviour
     IEnumerator Invincible_Timer()
     {
         _invincibilityTimer = GameManager.GAME.InvicibibleTime;
-        for(float _c = _invincibilityTimer; _c > 0f; _c -= GameManager.GAME.InvincibleRateOfDecay) yield return new WaitForEndOfFrame();
+        myFace.GetComponent<Animator>().SetBool("Flash", true);
+        for(float _c = _invincibilityTimer; _c > 0f; _c -= GameManager.GAME.InvincibleRateOfDecay) yield return new WaitForSeconds(1f);
+        myFace.GetComponent<Animator>().SetBool("Flash", false);
         _invincibilityTimer = 0;
     }
 

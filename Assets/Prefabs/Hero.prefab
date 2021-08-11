@@ -132,7 +132,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 785822247404788281}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 785822248055357882}
   - component: {fileID: 785822248055357880}
   - component: {fileID: 785822248055357883}
+  - component: {fileID: 5230645288403320232}
   m_Layer: 6
   m_Name: Hero_Face
   m_TagString: Untagged
@@ -370,6 +371,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBody: {fileID: 785822247025132717}
+--- !u!95 &5230645288403320232
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785822248055357861}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9ee9a200474a66645869bb54f860a191, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &785822248154568542
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +401,7 @@ GameObject:
   - component: {fileID: 785822248154568543}
   - component: {fileID: 785822248154568540}
   - component: {fileID: 785822248154568541}
+  - component: {fileID: 2304206691639043965}
   m_Layer: 10
   m_Name: Sword
   m_TagString: Sword
@@ -479,6 +500,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8379883, y: 0.38547254}
   m_EdgeRadius: 0
+--- !u!114 &2304206691639043965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785822248154568542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa52e8d8fbcacc4bb776d8b9e38be96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &785822248583291238
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 785822248583291238}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 785822247025132706}
