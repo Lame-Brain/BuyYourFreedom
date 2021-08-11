@@ -12,7 +12,7 @@ public class I_am_an_Enemy : MonoBehaviour
     public float damage;
     public float delayBetweenShots;
 
-    public GameObject Grave_Prefab;
+    public GameObject Grave_Prefab, Poof_Prefab;
 
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
@@ -89,7 +89,8 @@ public class I_am_an_Enemy : MonoBehaviour
                 health -= collision.collider.GetComponent<I_am_a_Sword>().damage;
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
-                GetComponent<Rigidbody2D>().AddForce(dir * 4000);
+                //GetComponent<Rigidbody2D>().AddForce(dir * 4000);
+                _rigidBody.AddForce(dir * 4000);
                 StartCoroutine(Invincible_Timer()); 
                 if (health <= 0) EnemyDies();
             }
@@ -119,7 +120,10 @@ public class I_am_an_Enemy : MonoBehaviour
 
     private void EnemyDies()
     {
-
+        Instantiate(Grave_Prefab, transform.position, Quaternion.identity);
+        Instantiate(Poof_Prefab, transform.position, Quaternion.identity);
+        myFace.GetComponent<Animator>().SetBool("Dead", true);
+        StartCoroutine(WaitForDeath());
     }
 
     IEnumerator Invincible_Timer()
@@ -127,7 +131,7 @@ public class I_am_an_Enemy : MonoBehaviour
         _invincibilityTimer = GameManager.GAME.InvicibibleTime;
         myFace.GetComponent<Animator>().SetBool("Flash", true);
         for (float _c = _invincibilityTimer; _c > 0f; _c -= GameManager.GAME.InvincibleRateOfDecay) yield return new WaitForSeconds(1f);
-        myFace.GetComponent<Animator>().SetBool("Flash", false);
+        if (myFace != null) myFace.GetComponent<Animator>().SetBool("Flash", false);
         _invincibilityTimer = 0;
     }
 
@@ -153,5 +157,13 @@ public class I_am_an_Enemy : MonoBehaviour
         //PLAY FIRE Rock SOUND
         yield return new WaitForSeconds(delayBetweenShots);
         _delay = 0;
+    }
+
+    IEnumerator WaitForDeath()
+    {
+        _rigidBody.velocity = Vector2.zero;
+        _rigidBody.angularVelocity = 0f;
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 }

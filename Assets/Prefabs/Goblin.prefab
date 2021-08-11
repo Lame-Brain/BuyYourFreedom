@@ -168,6 +168,7 @@ MonoBehaviour:
   damage: 1
   delayBetweenShots: 1
   Grave_Prefab: {fileID: 2829454452930074196, guid: 3bad6fd76f2f1f945a28e79d123650f7, type: 3}
+  Poof_Prefab: {fileID: 6357043026741950581, guid: 2b7674a62b257ef4fbe50162b9ff41bb, type: 3}
 --- !u!50 &2888511194951383755
 Rigidbody2D:
   serializedVersion: 4
