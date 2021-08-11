@@ -13,5 +13,8 @@ Game Music
 Splosion Prefab
 Explosion audioclip set to play on awake
 
-
+Enemy Object
+1. Travel Sound
+2. Charging Sound
+3. Fire Rock Sound
 

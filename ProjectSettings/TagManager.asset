@@ -12,6 +12,8 @@ TagManager:
   - PowerUp
   - Splosion
   - Sword
+  - Enemy
+  - Heavy Enemy
   layers:
   - Default
   - TransparentFX
@@ -26,7 +28,7 @@ TagManager:
   - Sword
   - Wall
   - Splosion
-  - 
+  - Grave
   - 
   - 
   - 

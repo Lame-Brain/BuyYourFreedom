@@ -173,8 +173,21 @@ public class I_am_a_Player : MonoBehaviour
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
             }
+            if(collision.collider.gameObject.tag == "Enemy" || collision.collider.tag == "Heavy Enemy")
+            {
+                PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Enemy>().damage);
+                StartCoroutine(Invincible_Timer());
+                if (GameManager.HEALTH <= 0) PlayerDies();
+                Vector2 dir = collision.collider.transform.position - transform.position;
+                dir = -dir.normalized;
+                float _force = 0;
+                if (collision.collider.gameObject.tag == "Enemy") _force = 10000;
+                if (collision.collider.gameObject.tag == "Heavy_Enemy") _force = 2000;
+                GetComponent<Rigidbody2D>().AddForce(dir * _force);
+            }
         }
     }
+    
     //Handle Player Damage
     public void PlayerDamage(float _damage)
     {
@@ -190,6 +203,7 @@ public class I_am_a_Player : MonoBehaviour
         {
             //Play player ouch sound
         }
+        Debug.Log("Health left " + GameManager.HEALTH);
     }
 
     //Handle Player Death

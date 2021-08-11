@@ -12,6 +12,8 @@ public class I_am_an_Enemy : MonoBehaviour
     public float damage;
     public float delayBetweenShots;
 
+    public GameObject Grave_Prefab;
+
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
     Transform _Target;
@@ -134,6 +136,7 @@ public class I_am_an_Enemy : MonoBehaviour
         _delay = delayBetweenShots;
         yield return new WaitForSeconds(delayBetweenShots);
         _charging = true;
+        //Play Charging Sound
         yield return new WaitForSeconds(1);
         _charging = false;
         yield return new WaitForSeconds(delayBetweenShots);

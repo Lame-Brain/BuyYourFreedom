@@ -1051,18 +1051,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2888511194951383755, guid: c0a2563fc0234334ba7469a7eaafeb3b, type: 3}
-      propertyPath: m_LinearDrag
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2888511194951383755, guid: c0a2563fc0234334ba7469a7eaafeb3b, type: 3}
-      propertyPath: m_AngularDrag
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5374338748672074077, guid: c0a2563fc0234334ba7469a7eaafeb3b, type: 3}
-      propertyPath: type
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5374338749586504962, guid: c0a2563fc0234334ba7469a7eaafeb3b, type: 3}
       propertyPath: m_Name
       value: Goblin
