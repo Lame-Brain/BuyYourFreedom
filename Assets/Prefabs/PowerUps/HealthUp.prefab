@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7221811906971523342}
   - component: {fileID: 7331897811951982755}
   - component: {fileID: 6059580777717351072}
+  - component: {fileID: 3982754319044960226}
   m_Layer: 0
   m_Name: HealthUp
   m_TagString: PowerUp
@@ -122,3 +123,29 @@ MonoBehaviour:
   arrows: 0
   bombs: 0
   pop_prefab: {fileID: 5688385634294066168, guid: 73a8649470fdf704dbecb4c766b9e38c, type: 3}
+--- !u!61 &3982754319044960226
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259542213600248736}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.002833873, y: 0.032589793}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0056679, y: 0.9404881}
+  m_EdgeRadius: 0

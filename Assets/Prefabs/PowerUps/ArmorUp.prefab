@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6381255527556214372}
   - component: {fileID: 2323277878605346782}
   - component: {fileID: 972653676611758280}
+  - component: {fileID: 4473349825283590419}
   m_Layer: 0
   m_Name: ArmorUp
   m_TagString: PowerUp
@@ -122,3 +123,19 @@ MonoBehaviour:
   arrows: 0
   bombs: 0
   pop_prefab: {fileID: 5688385634294066168, guid: 73a8649470fdf704dbecb4c766b9e38c, type: 3}
+--- !u!58 &4473349825283590419
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004305124898074039}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
