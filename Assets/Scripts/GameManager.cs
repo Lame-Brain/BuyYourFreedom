@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<GameObject> ArrowPool = new List<GameObject>();
     [HideInInspector] public List<GameObject> BombPool = new List<GameObject>();
     [HideInInspector] public List<GameObject> RockPool = new List<GameObject>();
-    public GameObject arrow_prefab, bomb_prefab, rock_prefab;
+    public GameObject arrow_prefab, bomb_prefab, rock_prefab, pop_prefab;
+    public GameObject HealthUp_prefab, ArmorUp_prefab, CoinUp_prefab, PointsUp_prefab, MoreArrows_prefab, MoreBombs_prefab;
     public GameObject[] floor, wall, monster;
 
     private int _wave;
@@ -61,6 +62,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(SECONDS_LEFT.ToString());
+
         if (QuitPanel.activeSelf) //checks if QuitPanel has been popped
         {
             if (Input.GetButtonUp("Fire1")) UnityEngine.SceneManagement.SceneManager.LoadScene(0); //quit game, back to intro screen
@@ -91,10 +94,36 @@ public class GameManager : MonoBehaviour
         if(_readyForNextPhase && _phase == "LOOT")
         {
             _readyForNextPhase = false;
-            //Convert all graves into loot
-            //10 seconds on the clock
-            //Start the timer
-            //IF there are no graves, go directly to next phase
+            if (GameObject.FindGameObjectsWithTag("Grave") != null) //IF there are no graves, go directly to next phase
+            {
+                GameObject _hpUp = null, _apUp = null, _xpUp = null, _gpUp = null, _arrwUp = null, _bmbUp = null; 
+                foreach(GameObject _go in GameObject.FindGameObjectsWithTag("Grave"))
+                {
+                    //Convert all graves into loot
+                    Instantiate(pop_prefab, _go.transform.position, Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Hearts > 0) _hpUp = Instantiate(HealthUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Shields > 0) _apUp = Instantiate(ArmorUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Bags > 0) _xpUp = Instantiate(PointsUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Coins > 0) _gpUp = Instantiate(CoinUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Arrows > 0) _arrwUp = Instantiate(MoreArrows_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Bombs > 0) _bmbUp = Instantiate(MoreBombs_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_hpUp != null) _hpUp.GetComponent<I_am_a_PowerUp>().health = _go.GetComponent<I_am_a_grave>().num_Hearts;
+                    if (_apUp != null) _apUp.GetComponent<I_am_a_PowerUp>().armor = _go.GetComponent<I_am_a_grave>().num_Shields;                                        
+                    if (_gpUp != null) _gpUp.GetComponent<I_am_a_PowerUp>().gold = _go.GetComponent<I_am_a_grave>().num_Coins;
+                    if (_arrwUp != null) _arrwUp.GetComponent<I_am_a_PowerUp>().arrows = _go.GetComponent<I_am_a_grave>().num_Arrows;
+                    if (_bmbUp != null) _bmbUp.GetComponent<I_am_a_PowerUp>().bombs = _go.GetComponent<I_am_a_grave>().num_Bombs;
+                    if (_xpUp != null)
+                        for (int _i = 0; _i < _go.GetComponent<I_am_a_grave>().num_Bags; _i++)
+                            _xpUp.GetComponent<I_am_a_PowerUp>().points = _go.GetComponent<I_am_a_grave>().bag_Scale;
+                    Destroy(_go);
+                }
+
+                //10 seconds on the clock
+                SECONDS_LEFT = 10;
+
+                //Start the timer
+                StartCoroutine(Countdown());                
+            }
             _phase = "BUY";
         }
 
@@ -133,23 +162,23 @@ public class GameManager : MonoBehaviour
             if (_random == 66) _selected_index = 10;
 
 
-            int x1 = 0, x2 = 0, y1 = 0, y2 = 0, zone = 1;
+            int x1 = 0, x2 = 0, y1 = 0, y2 = 0, zone = Random.Range(1,5);
             if (zone == 1) //North Gate
             {
                 x1 = -2; y1 = 11;
                 x2 = 2; y2 = 12;
             }
-            if (zone == 1) //East Gate
+            if (zone == 2) //East Gate
             {
                 x1 = 11; y1 = -2;
                 x2 = 12; y2 = 2;
             }
-            if (zone == 1) // South Gate
+            if (zone == 3) // South Gate
             {
                 x1 = -2; y1 = -12;
                 x2 = 2; y2 = -11;
             }
-            if (zone == 1) // West Gate
+            if (zone == 4) // West Gate
             {
                 x1 = -12; y1 = -2;
                 x2 = -11; y2 = 2;
@@ -186,7 +215,7 @@ public class GameManager : MonoBehaviour
     {
         for (int _c = 0; _c < SECONDS_LEFT; _c++)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f);            
         }
 
         //Phase Clean up

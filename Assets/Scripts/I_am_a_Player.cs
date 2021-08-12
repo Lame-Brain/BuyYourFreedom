@@ -92,17 +92,18 @@ public class I_am_a_Player : MonoBehaviour
         //if(selectedWeapon == Weapons.Sword && _changedDirection) Play Slashing AudioClip
 
         //Button 1 (fire selected weapon)
-        if(_button1 && selectedWeapon == Weapons.Arrow && _ready_arrow)
+        if(_button1 && selectedWeapon == Weapons.Arrow && _ready_arrow && GameManager.ARROWS > 0)
         {
             for (int _i = 0; _i < GameManager.GAME.ArrowPool.Count; _i++) if (!GameManager.GAME.ArrowPool[_i].GetComponent<I_am_an_Arrow>().inFlight) _arrow_index = _i;
             GameManager.GAME.ArrowPool[_arrow_index].transform.position = transform.position;
             GameManager.GAME.ArrowPool[_arrow_index].transform.rotation = transform.rotation;
             GameManager.GAME.ArrowPool[_arrow_index].GetComponent<I_am_an_Arrow>().Start_Flight();
             StartCoroutine(ReloadArrow());
+            GameManager.ARROWS--;
             _button1 = false;
             //PLAY FIRE ARROW SOUND
         }
-        if(_button1 && selectedWeapon == Weapons.Bomb && _ready_bomb)
+        if(_button1 && selectedWeapon == Weapons.Bomb && _ready_bomb && GameManager.BOMBS > 0)
         {
             //figure out which bomb in pool is next
             _bomb_index++;
@@ -112,6 +113,7 @@ public class I_am_a_Player : MonoBehaviour
             GameManager.GAME.BombPool[_bomb_index].transform.Translate(Vector2.down * 0.5f);
             GameManager.GAME.BombPool[_bomb_index].GetComponent<I_am_a_Bomb>().Arm_Bomb();
             StartCoroutine(ReloadBomb());
+            GameManager.BOMBS--;
             _button2 = false;
             //PLAY BOMB PLOP SOUND
         }
@@ -188,6 +190,7 @@ public class I_am_a_Player : MonoBehaviour
             if(collision.collider.gameObject.tag == "Rock")
             {
                 PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Arrow>().damage);
+                collision.collider.gameObject.GetComponent<I_am_an_Arrow>().Stop_Flight();
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
             }

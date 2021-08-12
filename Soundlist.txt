@@ -18,3 +18,6 @@ Enemy Object
 2. Charging Sound
 3. Fire Rock Sound
 4. Enemy Hit Shound
+
+Powerups:
+Pickup Sound

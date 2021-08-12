@@ -402,6 +402,13 @@ MonoBehaviour:
   arrow_prefab: {fileID: 4525558016649039361, guid: cd575a83d3eef4c4db04211be25430a6, type: 3}
   bomb_prefab: {fileID: 8940857289512072936, guid: e4b1fc3ac316f35489934bf10a7b6630, type: 3}
   rock_prefab: {fileID: 9113539080451349024, guid: 53c166d4dca389a439eba28139e60549, type: 3}
+  pop_prefab: {fileID: 0}
+  HealthUp_prefab: {fileID: 259542213600248736, guid: 54032978dee0d3d449fee52422299924, type: 3}
+  ArmorUp_prefab: {fileID: 2004305124898074039, guid: 8cec006989f751a498f517d50486f566, type: 3}
+  CoinUp_prefab: {fileID: 4819960065347549745, guid: 685acb36735af904fb22fe161ee28136, type: 3}
+  PointsUp_prefab: {fileID: 7629430736495501377, guid: 6a0204081ff973244b8ba4440a370f25, type: 3}
+  MoreArrows_prefab: {fileID: 5478795826255611, guid: 4f831e523fe7c9843aaaf1448c9ef37b, type: 3}
+  MoreBombs_prefab: {fileID: 871589215695711053, guid: da29420411b147c40addcffec30fe01c, type: 3}
   floor:
   - {fileID: 6449148748072626272, guid: 75beb3590eaca2f4a976e2229460d164, type: 3}
   - {fileID: 5460056839152264659, guid: 300ebf7ca50a8ea4c924202dd7f2d0eb, type: 3}
@@ -1271,6 +1278,10 @@ PrefabInstance:
     - target: {fileID: 785822248836679994, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
       propertyPath: m_Name
       value: Hero
+      objectReference: {fileID: 0}
+    - target: {fileID: 785822248836679994, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 785822248836679995, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
       propertyPath: m_RootOrder
