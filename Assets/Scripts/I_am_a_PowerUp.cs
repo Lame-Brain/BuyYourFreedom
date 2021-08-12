@@ -9,6 +9,8 @@ public class I_am_a_PowerUp : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        Debug.Log("HIT!");
         //Play powerup sound
 
         GameManager.HEALTH += health;
@@ -17,6 +19,7 @@ public class I_am_a_PowerUp : MonoBehaviour
         GameManager.POINTS += points;
         GameManager.ARROWS += arrows;
         GameManager.BOMBS += bombs;
+
         Instantiate(pop_prefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

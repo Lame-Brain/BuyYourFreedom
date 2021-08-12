@@ -402,7 +402,7 @@ MonoBehaviour:
   arrow_prefab: {fileID: 4525558016649039361, guid: cd575a83d3eef4c4db04211be25430a6, type: 3}
   bomb_prefab: {fileID: 8940857289512072936, guid: e4b1fc3ac316f35489934bf10a7b6630, type: 3}
   rock_prefab: {fileID: 9113539080451349024, guid: 53c166d4dca389a439eba28139e60549, type: 3}
-  pop_prefab: {fileID: 0}
+  pop_prefab: {fileID: 6357043026741950581, guid: 2b7674a62b257ef4fbe50162b9ff41bb, type: 3}
   HealthUp_prefab: {fileID: 259542213600248736, guid: 54032978dee0d3d449fee52422299924, type: 3}
   ArmorUp_prefab: {fileID: 2004305124898074039, guid: 8cec006989f751a498f517d50486f566, type: 3}
   CoinUp_prefab: {fileID: 4819960065347549745, guid: 685acb36735af904fb22fe161ee28136, type: 3}

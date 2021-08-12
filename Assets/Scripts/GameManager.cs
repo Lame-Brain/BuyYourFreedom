@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(SECONDS_LEFT.ToString());
+        //Debug.Log(SECONDS_LEFT.ToString());
 
         if (QuitPanel.activeSelf) //checks if QuitPanel has been popped
         {
@@ -88,12 +88,13 @@ public class GameManager : MonoBehaviour
             SECONDS_LEFT = 60;
 
             //Start the timer
-            StartCoroutine(Countdown());
+            StartCoroutine(Countdown(SECONDS_LEFT));
         }
 
         if(_readyForNextPhase && _phase == "LOOT")
         {
             _readyForNextPhase = false;
+
             if (GameObject.FindGameObjectsWithTag("Grave") != null) //IF there are no graves, go directly to next phase
             {
                 GameObject _hpUp = null, _apUp = null, _xpUp = null, _gpUp = null, _arrwUp = null, _bmbUp = null; 
@@ -101,12 +102,12 @@ public class GameManager : MonoBehaviour
                 {
                     //Convert all graves into loot
                     Instantiate(pop_prefab, _go.transform.position, Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Hearts > 0) _hpUp = Instantiate(HealthUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Shields > 0) _apUp = Instantiate(ArmorUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Bags > 0) _xpUp = Instantiate(PointsUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Coins > 0) _gpUp = Instantiate(CoinUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Arrows > 0) _arrwUp = Instantiate(MoreArrows_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Bombs > 0) _bmbUp = Instantiate(MoreBombs_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.025f, .025f)), _go.transform.position.y + (Random.Range(-.025f, .025f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Hearts > 0) _hpUp = Instantiate(HealthUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Shields > 0) _apUp = Instantiate(ArmorUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Bags > 0) _xpUp = Instantiate(PointsUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Coins > 0) _gpUp = Instantiate(CoinUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Arrows > 0) _arrwUp = Instantiate(MoreArrows_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
+                    if (_go.GetComponent<I_am_a_grave>().num_Bombs > 0) _bmbUp = Instantiate(MoreBombs_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
                     if (_hpUp != null) _hpUp.GetComponent<I_am_a_PowerUp>().health = _go.GetComponent<I_am_a_grave>().num_Hearts;
                     if (_apUp != null) _apUp.GetComponent<I_am_a_PowerUp>().armor = _go.GetComponent<I_am_a_grave>().num_Shields;                                        
                     if (_gpUp != null) _gpUp.GetComponent<I_am_a_PowerUp>().gold = _go.GetComponent<I_am_a_grave>().num_Coins;
@@ -122,9 +123,9 @@ public class GameManager : MonoBehaviour
                 SECONDS_LEFT = 10;
 
                 //Start the timer
-                StartCoroutine(Countdown());                
+                StartCoroutine(Countdown(SECONDS_LEFT));                
             }
-            _phase = "BUY";
+            
         }
 
         if(_readyForNextPhase && _phase == "BUY")
@@ -133,8 +134,7 @@ public class GameManager : MonoBehaviour
             //Pop the store screen
             //activate store controls
             //10 seconds on the clock
-            //Start the timer
-            _phase = "KILL";
+            //Start the timer            
         }
     }
 
@@ -211,31 +211,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator Countdown()
+    IEnumerator Countdown(int _c)
     {
-        for (int _c = 0; _c < SECONDS_LEFT; _c++)
+        for (int _i = 0; _i < _c; _i++)
         {
-            yield return new WaitForSeconds(1f);            
+            yield return new WaitForSeconds(1f);
+            SECONDS_LEFT--;
         }
 
         //Phase Clean up
-        if(_phase == "KILL")
+        if(_phase == "KILL" && !_readyForNextPhase)
         {
             //Destroy any remaining enemies
+            foreach (GameObject _enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                Instantiate(pop_prefab, _enemy.transform.position, Quaternion.identity);
+                Destroy(_enemy);
+            }
+            foreach (GameObject _enemy in GameObject.FindGameObjectsWithTag("Heavy Enemy"))
+            {
+                Instantiate(pop_prefab, _enemy.transform.position, Quaternion.identity);
+                Destroy(_enemy);
+            }
+
             _phase = "LOOT";
+            _readyForNextPhase = true;
         }
-        else if(_phase == "LOOT")
+        
+        if(_phase == "LOOT" && !_readyForNextPhase)
         {
+            Debug.Log("PROVE IT");
             //Destroy any remaining Powerups
+            foreach (GameObject _pu in GameObject.FindGameObjectsWithTag("PowerUp"))
+            {
+                Instantiate(pop_prefab, _pu.transform.position, Quaternion.identity);
+                Destroy(_pu);
+            }
+
             _phase = "BUY";
+            _readyForNextPhase = true;
         }
-        else if(_phase == "BUY")
+        
+        if(_phase == "BUY" && !_readyForNextPhase)
         {
             //Set store screen to inactive
             _phase = "KILL";
+            _readyForNextPhase = true;
         }
 
-        _readyForNextPhase = true;
+        
 
     }
 }
