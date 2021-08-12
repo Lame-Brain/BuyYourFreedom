@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject arrow_prefab, bomb_prefab, rock_prefab, pop_prefab;
     public GameObject HealthUp_prefab, ArmorUp_prefab, CoinUp_prefab, PointsUp_prefab, MoreArrows_prefab, MoreBombs_prefab;
     public GameObject[] floor, wall, monster;
+    public GameObject GUI, InfoPop_prefab;
 
     private int _wave;
     private bool _readyForNextPhase;
@@ -258,9 +259,17 @@ public class GameManager : MonoBehaviour
             _phase = "KILL";
             _readyForNextPhase = true;
         }
+    }
 
+    public void InfoTextPop(Vector2 _pos, string _message, Color _color)
+    {
+        GameObject _popup;
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+        Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position);
         
-
+        _popup = Instantiate(InfoPop_prefab, _screenPoint, Quaternion.identity, GUI.transform);
+        _popup.GetComponent<TMPro.TextMeshProUGUI>().text = _message;
+        _popup.GetComponent<TMPro.TextMeshProUGUI>().color = _color;
     }
 }
 

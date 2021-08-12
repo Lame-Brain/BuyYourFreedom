@@ -494,6 +494,8 @@ MonoBehaviour:
   - {fileID: 6313197647805293242, guid: 2cbd50a6ba04ef546aafe6f872eccfe1, type: 3}
   - {fileID: 591724293753560309, guid: 25b5f5b04dc35e84b9ceb906ecd878fe, type: 3}
   - {fileID: 6624256829951963979, guid: f455aa2b93915754582f0826351b25e5, type: 3}
+  GUI: {fileID: 1575043348}
+  InfoPop_prefab: {fileID: 1190042945506329019, guid: de1a24a573316944cbacf459a45e28d1, type: 3}
 --- !u!4 &683364869
 Transform:
   m_ObjectHideFlags: 0

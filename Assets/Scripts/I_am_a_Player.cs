@@ -211,7 +211,10 @@ public class I_am_a_Player : MonoBehaviour
         else
         {
             //Play player ouch sound
+            GameManager.GAME.InfoTextPop(transform.position, "-" + _adjustedDamage, Color.red);
         }
+
+        Camera.main.GetComponent<Camera_Script>().ScreenShake(.075f);
     }
 
     //Handle Player Death

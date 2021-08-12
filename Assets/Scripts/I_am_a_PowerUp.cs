@@ -5,12 +5,9 @@ using UnityEngine;
 public class I_am_a_PowerUp : MonoBehaviour
 {
     public int health, armor, gold, points, arrows, bombs;
-    public GameObject pop_prefab;
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        Debug.Log("HIT!");
+    { 
         //Play powerup sound
 
         GameManager.HEALTH += health;
@@ -20,7 +17,6 @@ public class I_am_a_PowerUp : MonoBehaviour
         GameManager.ARROWS += arrows;
         GameManager.BOMBS += bombs;
 
-        Instantiate(pop_prefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
