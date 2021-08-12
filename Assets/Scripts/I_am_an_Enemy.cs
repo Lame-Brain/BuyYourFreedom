@@ -11,7 +11,7 @@ public class I_am_an_Enemy : MonoBehaviour
     public float speed;
     public float damage;
     public float delayBetweenShots;
-
+    public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
     public GameObject Grave_Prefab, Poof_Prefab;
 
     Rigidbody2D _rigidBody;
@@ -83,6 +83,7 @@ public class I_am_an_Enemy : MonoBehaviour
                 health -= collision.collider.GetComponent<Boom>().damage;
                 StartCoroutine(Invincible_Timer());
                 if (health <= 0) EnemyDies();
+                //Play enemy hit sound
             }
             if (collision.collider.gameObject.tag == "Sword")
             {
@@ -97,6 +98,7 @@ public class I_am_an_Enemy : MonoBehaviour
                 {
                     _rigidBody.AddForce(dir * 3000);
                 }
+                //Play enemy hit sound
             }
             if (collision.collider.gameObject.tag == "Arrow")
             {
@@ -107,6 +109,7 @@ public class I_am_an_Enemy : MonoBehaviour
                 GetComponent<Rigidbody2D>().AddForce(dir * 2000);
                 StartCoroutine(Invincible_Timer());
                 if (health <= 0) EnemyDies();
+                //Play enemy hit sound
             }
         }
     }
@@ -124,7 +127,23 @@ public class I_am_an_Enemy : MonoBehaviour
 
     private void EnemyDies()
     {
-        Instantiate(Grave_Prefab, transform.position, Quaternion.identity);
+        GameObject _go = Instantiate(Grave_Prefab, transform.position, Quaternion.identity);
+        int _hrts = Random.Range(min_hearts, max_hearts); if (_hrts < 0) _hrts = 0;
+        int _shlds = Random.Range(min_shields, max_shields); if (_shlds < 0) _shlds = 0;
+        int _coins = Random.Range(min_coins, max_coins); if (_coins < 0) _coins = 0;
+        int _bags = Random.Range(min_bags, max_bags); if (_bags < 0) _bags = 0;
+        int _scale = Random.Range(min_points, max_points); if (_scale < 0) _scale = 0;
+        int _arrws = Random.Range(min_Arrows, max_Arrows); if (_arrws < 0) _arrws = 0;
+        int _bmbs = Random.Range(min_Bombs, max_Bombs); if (_bmbs < 0) _bmbs = 0;
+        _go = Instantiate(Grave_Prefab, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+        _go.GetComponent<I_am_a_grave>().num_Hearts = _hrts;
+        _go.GetComponent<I_am_a_grave>().num_Shields = _shlds;
+        _go.GetComponent<I_am_a_grave>().num_Coins = _coins;
+        _go.GetComponent<I_am_a_grave>().num_Bags = _bags;
+        _go.GetComponent<I_am_a_grave>().bag_Scale = _scale;
+        _go.GetComponent<I_am_a_grave>().num_Arrows = _arrws;
+        _go.GetComponent<I_am_a_grave>().num_Bombs = _bmbs;
+
         Instantiate(Poof_Prefab, transform.position, Quaternion.identity);
         myFace.GetComponent<Animator>().SetBool("Dead", true);
         StartCoroutine(WaitForDeath());

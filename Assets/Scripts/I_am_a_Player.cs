@@ -185,6 +185,12 @@ public class I_am_a_Player : MonoBehaviour
                 if (collision.collider.gameObject.tag == "Heavy_Enemy") _force = 2000;
                 GetComponent<Rigidbody2D>().AddForce(dir * _force);
             }
+            if(collision.collider.gameObject.tag == "Rock")
+            {
+                PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Arrow>().damage);
+                StartCoroutine(Invincible_Timer());
+                if (GameManager.HEALTH <= 0) PlayerDies();
+            }
         }
     }
     

@@ -17,4 +17,4 @@ Enemy Object
 1. Travel Sound
 2. Charging Sound
 3. Fire Rock Sound
-
+4. Enemy Hit Shound

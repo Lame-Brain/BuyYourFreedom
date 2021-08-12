@@ -99,7 +99,7 @@ MonoBehaviour:
   inFlight: 0
   flightTime: 4
   speed: 10
-  damage: 1
+  damage: 2
 --- !u!61 &110431021639354194
 BoxCollider2D:
   m_ObjectHideFlags: 0

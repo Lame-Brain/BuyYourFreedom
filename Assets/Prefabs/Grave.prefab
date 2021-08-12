@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6145168308307206460}
   - component: {fileID: 1409500000053608731}
+  - component: {fileID: 205562558128869337}
   m_Layer: 0
   m_Name: Grave
   m_TagString: Untagged
@@ -82,3 +83,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &205562558128869337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829454452930074196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b16193bc268d224682cbd3e87129539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
