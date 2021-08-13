@@ -9,10 +9,12 @@ public class I_am_a_Bomb : MonoBehaviour
     public float damage;
     public GameObject Splosion_Prefab;
 
+    int _c = 0;
     public void Arm_Bomb()
     {
         isArmed = true;
-        StartCoroutine(FuseTimer(fuseLength));
+        _c = 0;
+        FuseTimer();
     }
 
     public void Disarm_Bomb()
@@ -21,16 +23,26 @@ public class I_am_a_Bomb : MonoBehaviour
         transform.position = GameManager.POOL.position;
     }
 
-    IEnumerator FuseTimer(float delay)
+    IEnumerator FuseTimer1sec()
     {
-        yield return new WaitForSeconds(delay);
-        GameObject _go;
-        if (isArmed)
+        yield return new WaitForSeconds(1f);
+        FuseTimer();
+    }
+    private void FuseTimer()
+    {
+        StartCoroutine(FuseTimer1sec());
+        if(!GameManager.PAUSED) _c++;
+
+        if (_c > fuseLength)
         {
-            _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
-            _go.GetComponent<Boom>().damage = damage;
+            GameObject _go;
+            if (isArmed)
+            {
+                _go = Instantiate(Splosion_Prefab, transform.position, Quaternion.identity);
+                _go.GetComponent<Boom>().damage = damage;
+            }
+            Disarm_Bomb();
         }
-        Disarm_Bomb();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

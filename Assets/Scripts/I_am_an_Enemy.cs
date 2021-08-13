@@ -30,47 +30,50 @@ public class I_am_an_Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(type == Monster.beserker)
+        if (!GameManager.PAUSED)
         {
-            _Target = GameObject.FindGameObjectWithTag("Player").transform;
-            transform.up = _Target.position - transform.position; //face player with y axis
-            transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis              
-            //chance to play travel sound
-        }
-        if (type == Monster.charger)
-        {
-            if(!_inRange && _delay == 0 && !_charging)
+            if (type == Monster.beserker && health > 0)
             {
                 _Target = GameObject.FindGameObjectWithTag("Player").transform;
                 transform.up = _Target.position - transform.position; //face player with y axis
-                transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
-                //chance to play travel sound
+                transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis              
+                                                                          //chance to play travel sound
             }
-            if (_inRange && _delay == 0 && !_charging)
+            if (type == Monster.charger && health > 0)
             {
-                transform.up = _Target.position - transform.position; //face player with y axis
-                StartCoroutine(MonsterCharges());
+                if (!_inRange && _delay == 0 && !_charging)
+                {
+                    _Target = GameObject.FindGameObjectWithTag("Player").transform;
+                    transform.up = _Target.position - transform.position; //face player with y axis
+                    transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
+                                                                              //chance to play travel sound
+                }
+                if (_inRange && _delay == 0 && !_charging)
+                {
+                    transform.up = _Target.position - transform.position; //face player with y axis
+                    StartCoroutine(MonsterCharges());
+                }
+                if (_charging) transform.Translate(Vector2.up * speed * 3 * Time.deltaTime); //move along y axis
             }
-            if (_charging) transform.Translate(Vector2.up * speed * 3 * Time.deltaTime); //move along y axis
-        }
-        if(type == Monster.ranger)
-        {
-            if (!_inRange)
+            if (type == Monster.ranger && health > 0)
             {
-                _Target = GameObject.FindGameObjectWithTag("Player").transform;
-                transform.up = _Target.position - transform.position; //face player with y axis
-                transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
-                //chance to play travel sound
+                if (!_inRange)
+                {
+                    _Target = GameObject.FindGameObjectWithTag("Player").transform;
+                    transform.up = _Target.position - transform.position; //face player with y axis
+                    transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
+                                                                              //chance to play travel sound
+                }
+                if (_inRange)
+                {
+                    _Target = GameObject.FindGameObjectWithTag("Player").transform;
+                    transform.up = _Target.position - transform.position; //face player with y axis
+                    transform.Translate(Vector2.down * speed * Time.deltaTime); //move back along y axis
+                    transform.Translate(Vector2.right * speed * 2 * Time.deltaTime); //move sideways
+                                                                                     //chance to play travel sound
+                }
+                if (_inRange && _delay == 0) StartCoroutine(MonsterShoots());
             }
-            if (_inRange)
-            {
-                _Target = GameObject.FindGameObjectWithTag("Player").transform;
-                transform.up = _Target.position - transform.position; //face player with y axis
-                transform.Translate(Vector2.down * speed * Time.deltaTime); //move back along y axis
-                transform.Translate(Vector2.right * speed * 2 * Time.deltaTime); //move sideways
-                //chance to play travel sound
-            }
-            if (_inRange && _delay == 0) StartCoroutine(MonsterShoots());
         }
     }
 
@@ -80,39 +83,39 @@ public class I_am_an_Enemy : MonoBehaviour
         {
             if (collision.collider.gameObject.tag == "Splosion")
             {
-                health -= collision.collider.GetComponent<Boom>().damage;
+                Enemy_takes_damage(collision.collider.GetComponent<Boom>().damage);
                 StartCoroutine(Invincible_Timer());
-                if (health <= 0) EnemyDies();
-                //Play enemy hit sound
             }
             if (collision.collider.gameObject.tag == "Sword")
             {
-                health -= collision.collider.GetComponent<I_am_a_Sword>().damage;
+                Enemy_takes_damage(collision.collider.GetComponent<I_am_a_Sword>().damage);
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
                 StartCoroutine(Invincible_Timer());
-                if (health <= 0)
-                {
-                    EnemyDies();
-                } else
+                if (health > 0)
                 {
                     _rigidBody.AddForce(dir * 3000);
                 }
-                //Play enemy hit sound
             }
             if (collision.collider.gameObject.tag == "Arrow")
             {
                 collision.collider.GetComponent<I_am_an_Arrow>().Stop_Flight();
-                health -= collision.collider.GetComponent<I_am_an_Arrow>().damage;
+                Enemy_takes_damage(collision.collider.GetComponent<I_am_an_Arrow>().damage);
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
                 GetComponent<Rigidbody2D>().AddForce(dir * 2000);
-                StartCoroutine(Invincible_Timer());
-                if (health <= 0) EnemyDies();
-                //Play enemy hit sound
+                StartCoroutine(Invincible_Timer());                
             }
         }
     }
+    private void Enemy_takes_damage(float _d)
+    {
+        health -= _d;
+        if (health <= 0) EnemyDies();
+        GameManager.GAME.LittleTextPop(transform.position, "-" + _d);
+        //Play enemy hit sound
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Range")
@@ -127,6 +130,7 @@ public class I_am_an_Enemy : MonoBehaviour
 
     private void EnemyDies()
     {
+        gameObject.GetComponent<CircleCollider2D>().radius = 0;
         GameObject _go = Instantiate(Grave_Prefab, transform.position, Quaternion.identity);
         int _hrts = Random.Range(min_hearts, max_hearts); if (_hrts < 0) _hrts = 0;
         int _shlds = Random.Range(min_shields, max_shields); if (_shlds < 0) _shlds = 0;

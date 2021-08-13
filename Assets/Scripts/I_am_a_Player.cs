@@ -123,7 +123,9 @@ public class I_am_a_Player : MonoBehaviour
         {
             if (selectedWeapon == Weapons.Sword) { selectedWeapon = Weapons.Arrow; _button2 = false; }
             if (selectedWeapon == Weapons.Arrow && _button2) { selectedWeapon = Weapons.Bomb; _button2 = false; }
+            if (selectedWeapon == Weapons.Arrow && GameManager.ARROWS < 1) selectedWeapon = Weapons.Bomb;
             if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; }
+            if (selectedWeapon == Weapons.Bomb && GameManager.BOMBS < 1) selectedWeapon = Weapons.Sword;
         }
 
         //Weapon Selection
@@ -155,8 +157,7 @@ public class I_am_a_Player : MonoBehaviour
         //Escape Button: Quit Panel
         if (_Esc)
         {
-            _button3 = false;
-            GameManager.PAUSED = true;
+            _Esc = false;
             GameManager.GAME.PopQuitMenu();
         }
 

@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject arrow_prefab, bomb_prefab, rock_prefab, pop_prefab;
     public GameObject HealthUp_prefab, ArmorUp_prefab, CoinUp_prefab, PointsUp_prefab, MoreArrows_prefab, MoreBombs_prefab;
     public GameObject[] floor, wall, monster;
-    public GameObject GUI, InfoPop_prefab;
+    public GameObject GUI, InfoPop_prefab, littleInfo_prefab;
 
     private int _wave;
     private bool _readyForNextPhase;
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         HEALTH = 25;
         ARMOR = 0;
         ARROWS = 6;
-        BOMBS = 0;
+        BOMBS = 1;
         GOLD = 0;
         POINTS = 0;
 
@@ -63,18 +63,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(SECONDS_LEFT.ToString());
 
-        if (QuitPanel.activeSelf) //checks if QuitPanel has been popped
-        {
-            if (Input.GetButtonUp("Fire1")) UnityEngine.SceneManagement.SceneManager.LoadScene(0); //quit game, back to intro screen
-            if (Input.GetButtonUp("Fire2") || Input.GetButtonUp("Cancel")) //hide quit panel
-            {
-                QuitPanel.SetActive(false);
-                PAUSED = false;
-                //Switch music back to game music
-            }
-        }
+        if (QuitPanel.activeSelf && Input.GetButtonUp("Fire1")) Yes_Quit(false);
         
         //Phases
         if(_readyForNextPhase && _phase == "KILL")
@@ -141,6 +131,7 @@ public class GameManager : MonoBehaviour
 
     public void PopQuitMenu()
     {
+        PAUSED = true;
         QuitPanel.SetActive(true);
         //Switch music to menu music
     }
@@ -264,12 +255,30 @@ public class GameManager : MonoBehaviour
     public void InfoTextPop(Vector2 _pos, string _message, Color _color)
     {
         GameObject _popup;
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
-        Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position);
+        Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _pos);
         
         _popup = Instantiate(InfoPop_prefab, _screenPoint, Quaternion.identity, GUI.transform);
         _popup.GetComponent<TMPro.TextMeshProUGUI>().text = _message;
         _popup.GetComponent<TMPro.TextMeshProUGUI>().color = _color;
+    }
+    public void LittleTextPop(Vector2 _pos, string _message)
+    {
+        GameObject _popup;
+        Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _pos);
+        
+        _popup = Instantiate(littleInfo_prefab, _screenPoint, Quaternion.identity, GUI.transform);
+        _popup.GetComponent<TMPro.TextMeshProUGUI>().text = _message;
+    }
+
+    public void Yes_Quit(bool yes) 
+    {
+        PAUSED = false;
+        if(yes) UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        if (!yes)
+        {
+            QuitPanel.SetActive(false);
+            //Switch back to game music
+        }
     }
 }
 

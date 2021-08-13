@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isArmed: 0
-  fuseLength: 3
+  fuseLength: 1.5
   damage: 3
   Splosion_Prefab: {fileID: 4023528732974388869, guid: 834367d8ba283754a9c15e11974e26dd, type: 3}
 --- !u!58 &9105313519982640088
