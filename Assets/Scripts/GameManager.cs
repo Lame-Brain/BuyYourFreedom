@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private bool _readyForNextPhase;
     private string _phase;
 
+    private List<GameObject> enemies = new List<GameObject>();
+
     private void Awake()
     {
         GAME = this;
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
         GOLD = 0;
         POINTS = 0;
 
-        _wave = 5;
+        _wave = 1;
         _readyForNextPhase = true;
         _phase = "KILL";
 
@@ -88,30 +90,47 @@ public class GameManager : MonoBehaviour
 
             if (GameObject.FindGameObjectsWithTag("Grave") != null) //IF there are no graves, go directly to next phase
             {
-                GameObject _hpUp = null, _apUp = null, _xpUp = null, _gpUp = null, _arrwUp = null, _bmbUp = null; 
+                float _delta = 1f;
+                GameObject _hpUp = null, _apUp = null, _xpUp = null, _gpUp = null, _arrwUp = null, _bmbUp = null;
+                enemies.Clear();
                 foreach(GameObject _go in GameObject.FindGameObjectsWithTag("Grave"))
                 {
                     //Convert all graves into loot
                     Instantiate(pop_prefab, _go.transform.position, Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Hearts > 0) _hpUp = Instantiate(HealthUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Shields > 0) _apUp = Instantiate(ArmorUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Bags > 0) _xpUp = Instantiate(PointsUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Coins > 0) _gpUp = Instantiate(CoinUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Arrows > 0) _arrwUp = Instantiate(MoreArrows_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_go.GetComponent<I_am_a_grave>().num_Bombs > 0) _bmbUp = Instantiate(MoreBombs_prefab, new Vector2(_go.transform.position.x + (Random.Range(-.25f, .25f)), _go.transform.position.y + (Random.Range(-.25f, .25f))), Quaternion.identity);
-                    if (_hpUp != null) _hpUp.GetComponent<I_am_a_PowerUp>().health = _go.GetComponent<I_am_a_grave>().num_Hearts;
-                    if (_apUp != null) _apUp.GetComponent<I_am_a_PowerUp>().armor = _go.GetComponent<I_am_a_grave>().num_Shields;                                        
-                    if (_gpUp != null) _gpUp.GetComponent<I_am_a_PowerUp>().gold = _go.GetComponent<I_am_a_grave>().num_Coins;
-                    if (_arrwUp != null) _arrwUp.GetComponent<I_am_a_PowerUp>().arrows = _go.GetComponent<I_am_a_grave>().num_Arrows;
-                    if (_bmbUp != null) _bmbUp.GetComponent<I_am_a_PowerUp>().bombs = _go.GetComponent<I_am_a_grave>().num_Bombs;
-                    if (_xpUp != null)
+                    _hpUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Hearts > 0) _hpUp = Instantiate(HealthUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
+                    if (_hpUp != null) { _hpUp.GetComponent<I_am_a_PowerUp>().health = _go.GetComponent<I_am_a_grave>().num_Hearts; enemies.Add(_hpUp); }
+
+                    _apUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Shields > 0) _apUp = Instantiate(ArmorUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
+                    if (_apUp != null) { _apUp.GetComponent<I_am_a_PowerUp>().armor = _go.GetComponent<I_am_a_grave>().num_Shields; enemies.Add(_apUp); }
+
+                    _gpUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Coins > 0) _gpUp = Instantiate(CoinUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
+                    if (_gpUp != null) { _gpUp.GetComponent<I_am_a_PowerUp>().gold = _go.GetComponent<I_am_a_grave>().num_Coins; enemies.Add(_gpUp); }
+
+                    _arrwUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Arrows > 0) _arrwUp = Instantiate(MoreArrows_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
+                    if (_arrwUp != null) { _arrwUp.GetComponent<I_am_a_PowerUp>().arrows = _go.GetComponent<I_am_a_grave>().num_Arrows; enemies.Add(_arrwUp); }
+
+                    _bmbUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Bombs > 0) _bmbUp = Instantiate(MoreBombs_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
+                    if (_bmbUp != null) { _bmbUp.GetComponent<I_am_a_PowerUp>().bombs = _go.GetComponent<I_am_a_grave>().num_Bombs; enemies.Add(_bmbUp); }
+
+                    _xpUp = null;
+                    if (_go.GetComponent<I_am_a_grave>().num_Bags > 0)
                         for (int _i = 0; _i < _go.GetComponent<I_am_a_grave>().num_Bags; _i++)
+                        {
+                            _xpUp = Instantiate(PointsUp_prefab, new Vector2(_go.transform.position.x + (Random.Range(-_delta, _delta)), _go.transform.position.y + (Random.Range(-_delta, _delta))), Quaternion.identity);
                             _xpUp.GetComponent<I_am_a_PowerUp>().points = _go.GetComponent<I_am_a_grave>().bag_Scale;
+                            enemies.Add(_xpUp);
+                        }
                     Destroy(_go);
                 }
 
                 //10 seconds on the clock
                 SECONDS_LEFT = 10;
+                if (enemies.Count == 0) SECONDS_LEFT = 1;
 
                 //Start the timer
                 StartCoroutine(Countdown(SECONDS_LEFT));                
@@ -127,6 +146,7 @@ public class GameManager : MonoBehaviour
             //10 seconds on the clock
             //Start the timer            
         }
+
     }
 
     public void PopQuitMenu()
@@ -176,7 +196,8 @@ public class GameManager : MonoBehaviour
                 x2 = -11; y2 = 2;
             }
 
-            Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity);
+            enemies.Add(Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity));
+
         }
     }
 
@@ -205,7 +226,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Countdown(int _c)
     {
-        for (int _i = 0; _i < _c; _i++)
+        while(SECONDS_LEFT > 0)
         {
             yield return new WaitForSeconds(1f);
             SECONDS_LEFT--;
@@ -232,7 +253,6 @@ public class GameManager : MonoBehaviour
         
         if(_phase == "LOOT" && !_readyForNextPhase)
         {
-            Debug.Log("PROVE IT");
             //Destroy any remaining Powerups
             foreach (GameObject _pu in GameObject.FindGameObjectsWithTag("PowerUp"))
             {
@@ -279,6 +299,21 @@ public class GameManager : MonoBehaviour
             QuitPanel.SetActive(false);
             //Switch back to game music
         }
+    }
+
+    public void Another_one_bites_the_dust(GameObject _go) 
+    {
+        if (enemies.Contains(_go))
+        {
+            enemies.Remove(_go);
+            Debug.Log("Removing " + _go.name);
+        }
+        else
+        {
+            Debug.Log("ERROR! I cannot find " + _go.name);
+        }
+
+        if(enemies.Count == 0) SECONDS_LEFT = 1; 
     }
 }
 

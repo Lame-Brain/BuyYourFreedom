@@ -41,6 +41,7 @@ public class I_am_a_PowerUp : MonoBehaviour
             GameManager.GAME.InfoTextPop(transform.position, "+" + bombs, Color.black);
         }
 
+        GameManager.GAME.Another_one_bites_the_dust(gameObject);
         Destroy(gameObject);
     }
 }
