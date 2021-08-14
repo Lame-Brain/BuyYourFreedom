@@ -166,7 +166,7 @@ public class I_am_a_Store : MonoBehaviour
 
                 if (selected == 8 && GameManager.GOLD >= GameManager.FREEDOM)
                 {
-                    //Win Game
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(3);
                 }
                 //if(selected == 7 && GameManager.GOLD < GameManager.FREEDOM) Play Failure Sound
 

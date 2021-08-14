@@ -251,8 +251,7 @@ public class GameManager : MonoBehaviour
         while(SECONDS_LEFT > 0)
         {
             yield return new WaitForSeconds(1f);
-            //if(!PAUSED) SECONDS_LEFT--;
-            SECONDS_LEFT--;
+            if(!PAUSED) SECONDS_LEFT--;
             if (_phase == "KILL" && MonsterPoolObject.childCount == 0) SECONDS_LEFT = 0;
             if (_phase == "LOOT" && LootRootObject.childCount == 0) SECONDS_LEFT = 0;
             if (_phase == "BUY" && GOLD <= 0) SECONDS_LEFT = 0;

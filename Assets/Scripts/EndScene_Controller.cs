@@ -8,7 +8,8 @@ public class EndScene_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ready = false
+        ready = false;
+        StartCoroutine(Wait());
     }
 
     // Update is called once per frame
@@ -18,7 +19,7 @@ public class EndScene_Controller : MonoBehaviour
         {
             if (Input.anyKey)
             {
-                Unity
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
         }
     }
