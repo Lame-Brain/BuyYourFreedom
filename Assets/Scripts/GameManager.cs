@@ -130,10 +130,16 @@ public class GameManager : MonoBehaviour
                     Destroy(_go);
                 }
 
+                for(int _i = 0; _i < LootRootObject.childCount; _i++)
+                {
+                    if (LootRootObject.GetChild(_i).position.x > 12.5f) LootRootObject.GetChild(_i).position = new Vector2(12.5f, LootRootObject.GetChild(_i).position.y);
+                    if (LootRootObject.GetChild(_i).position.x < -12.5f) LootRootObject.GetChild(_i).position = new Vector2(-12.5f, LootRootObject.GetChild(_i).position.y);
+                    if (LootRootObject.GetChild(_i).position.y > 12.5f) LootRootObject.GetChild(_i).position = new Vector2(LootRootObject.GetChild(_i).position.x, 12.5f);
+                    if (LootRootObject.GetChild(_i).position.y < -12.5f) LootRootObject.GetChild(_i).position = new Vector2(LootRootObject.GetChild(_i).position.x, -12.5f);
+            }
 
-
-                //10 seconds on the clock
-                SECONDS_LEFT = 10;                
+            //10 seconds on the clock
+            SECONDS_LEFT = 10;                
 
                 //Start the timer
                 StartCoroutine(Countdown(SECONDS_LEFT));                
