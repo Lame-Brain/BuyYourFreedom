@@ -6,11 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GAME;
     public static Transform POOL;
-    public static float HEALTH, ARMOR, ARROWS, BOMBS, GOLD, POINTS;
+    public static float HEALTH, ARMOR, ARROWS, BOMBS, GOLD, POINTS, FREEDOM;
     public static bool PAUSED;
     public static int SECONDS_LEFT;
 
-    public GameObject QuitPanel;
+    public GameObject QuitPanel, StorePanel;
     public float InvicibibleTime, InvincibleRateOfDecay;
     [HideInInspector] public List<GameObject> ArrowPool = new List<GameObject>();
     [HideInInspector] public List<GameObject> BombPool = new List<GameObject>();
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     private bool _readyForNextPhase;
     private string _phase;
     
-    private List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> enemies = new List<GameObject>();
 
     private void Awake()
     {
@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
         BOMBS = 1;
         GOLD = 0;
         POINTS = 0;
+        FREEDOM = 100000;
 
         _wave = 1;
         _readyForNextPhase = true;
@@ -78,6 +79,8 @@ public class GameManager : MonoBehaviour
             //spawn waves of bad guys
             SpawnWave(_wave);
             _wave ++;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().Init_Play();
+
 
             //Refill the seconds (I think 60 for this phase)
             SECONDS_LEFT = 60;
@@ -144,9 +147,20 @@ public class GameManager : MonoBehaviour
         {
             _readyForNextPhase = false;
             //Pop the store screen
+            StorePanel.SetActive(true);
+            StorePanel.GetComponent<I_am_a_Store>().InitStore();           
+
+            //Switch to store music
+
             //activate store controls
+            GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().canMove = false;
+
             //10 seconds on the clock
-            //Start the timer            
+            //SECONDS_LEFT = 10;
+            SECONDS_LEFT = 10;
+
+            //Start the timer
+            StartCoroutine(Countdown(SECONDS_LEFT));
         }
 
     }
@@ -158,9 +172,9 @@ public class GameManager : MonoBehaviour
         //Switch music to menu music
     }
 
-    public void SpawnWave(int _num)
+    public void SpawnWave(int _t)
     {
-        _num += 5; if (_num > 25) _num = 25;
+        int _num = _t + 4; if (_num > 25) _num = 25;
         for(int _n = 0; _n < _num; _n++)
         {
             int _random = Random.Range(1, 66);
@@ -198,10 +212,11 @@ public class GameManager : MonoBehaviour
                 x1 = -12; y1 = -2;
                 x2 = -11; y2 = 2;
             }
-            
-            enemies.Add(Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity));
-            enemies[_n].GetComponent<I_am_an_Enemy>().health += (int)(_wave / 5);
-            enemies[_n].GetComponent<I_am_an_Enemy>().damage += sword_bonus;
+
+            GameObject _monster = Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity);
+            //_monster.GetComponent<I_am_an_Enemy>().health += (int)(_wave / 5);
+            //_monster.GetComponent<I_am_an_Enemy>().damage += sword_bonus;
+            enemies.Add(_monster);
         }
     }
 
@@ -233,7 +248,8 @@ public class GameManager : MonoBehaviour
         while(SECONDS_LEFT > 0)
         {
             yield return new WaitForSeconds(1f);
-            if(!PAUSED) SECONDS_LEFT--;
+            //if(!PAUSED) SECONDS_LEFT--;
+            SECONDS_LEFT--;
         }
 
         //Phase Clean up
@@ -269,8 +285,9 @@ public class GameManager : MonoBehaviour
         }
         
         if(_phase == "BUY" && !_readyForNextPhase)
-        {
-            //Set store screen to inactive
+        {            
+            StorePanel.SetActive(false);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().canMove = true;            
             _phase = "KILL";
             _readyForNextPhase = true;
         }
