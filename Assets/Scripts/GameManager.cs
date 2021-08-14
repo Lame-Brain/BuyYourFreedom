@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         BOMBS = 1;
         GOLD = 0;
         POINTS = 0;
-        FREEDOM = 100000;
+        FREEDOM = 50000;
 
         _wave = 1;
         _readyForNextPhase = true;
@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
         int _num = _t + 4; if (_num > 25) _num = 25;
         for(int _n = 0; _n < _num; _n++)
         {
-            int _random = Random.Range(1, 66);
+            int _random = Random.Range(1, 67);
             int _selected_index = 0;
             if (_random > 14) _selected_index = 1;
             if (_random > 26) _selected_index = 2;
@@ -219,7 +219,13 @@ public class GameManager : MonoBehaviour
 
             GameObject _monster = Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity, MonsterPoolObject);
             _monster.GetComponentInChildren<I_am_an_Enemy>().health += (int)(_wave / 5);
-            //_monster.GetComponent<I_am_an_Enemy>().damage += sword_bonus;
+            _monster.GetComponentInChildren<I_am_an_Enemy>().damage += sword_bonus;
+        }
+        if(GOLD > 45555)
+        {
+            GameObject _monster = Instantiate(monster[10], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
+            _monster.GetComponentInChildren<I_am_an_Enemy>().health += (int)(_wave / 5);
+            _monster.GetComponentInChildren<I_am_an_Enemy>().damage += sword_bonus;
         }
     }
 
