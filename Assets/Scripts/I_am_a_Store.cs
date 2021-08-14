@@ -174,8 +174,6 @@ public class I_am_a_Store : MonoBehaviour
                 {
                     GameManager.SECONDS_LEFT = 1;
                 }
-
-                if(GameManager.GOLD <= 0) GameManager.SECONDS_LEFT = 1;
             }
         }
     }

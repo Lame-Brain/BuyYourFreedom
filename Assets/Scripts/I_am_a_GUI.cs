@@ -6,7 +6,7 @@ public class I_am_a_GUI : MonoBehaviour
 {
     public GameObject Hud;
     public bool ShowHUD;
-    public TMPro.TextMeshProUGUI Health, Armor, Arrows, Bombs, Points, Gold, Timer;
+    public TMPro.TextMeshProUGUI Health, Armor, Arrows, Bombs, Points, Gold, Timer, enemies_left;
 
     void Update()
     {
@@ -20,6 +20,7 @@ public class I_am_a_GUI : MonoBehaviour
             Gold.text = GameManager.GOLD.ToString();
             Points.text = GameManager.POINTS.ToString();
             Timer.text = GameManager.SECONDS_LEFT.ToString();
+            enemies_left.text = GameManager.GAME.MonsterPoolObject.childCount.ToString();
         }
     }
 }

@@ -190,7 +190,6 @@ public class I_am_an_Enemy : MonoBehaviour
     {
         _rigidBody.velocity = Vector2.zero;
         _rigidBody.angularVelocity = 0f;
-        GameManager.GAME.Another_one_bites_the_dust(gameObject.transform.parent.gameObject);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject.transform.parent.gameObject);
     }
