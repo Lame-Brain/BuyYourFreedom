@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 7024963265833024267, guid: 91f8e10a1c3b4de4ab94abd3d4800fc7, type: 3}
-  m_Color: {r: 0.96470594, g: 0.80392164, b: 0.14901961, a: 1}
+  m_Color: {r: 0.1457814, g: 0.6603774, b: 0.28676742, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
   max_Arrows: 10
   min_Bombs: 1
   max_Bombs: 3
-  Grave_Prefab: {fileID: 2829454452930074196, guid: 3bad6fd76f2f1f945a28e79d123650f7, type: 3}
+  Grave_Prefab: {fileID: 7008236358902036224, guid: cffe4300deeba6042824a048d0d44c2a, type: 3}
   Poof_Prefab: {fileID: 6357043026741950581, guid: 2b7674a62b257ef4fbe50162b9ff41bb, type: 3}
 --- !u!50 &6624256829096444231
 Rigidbody2D:
@@ -245,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 6624256829951963979}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 2}
   m_Children:
   - {fileID: 6624256828061496012}
   - {fileID: 6624256829096444229}
