@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class IntroScene_Controller : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Start_Game()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
