@@ -19,17 +19,20 @@ public class GameManager : MonoBehaviour
     public GameObject HealthUp_prefab, ArmorUp_prefab, CoinUp_prefab, PointsUp_prefab, MoreArrows_prefab, MoreBombs_prefab;
     public GameObject[] floor, wall, monster;
     public GameObject GUI, InfoPop_prefab, littleInfo_prefab;
+    public int sword_bonus, arrow_bonus, bomb_bonus;
 
     private int _wave;
     private bool _readyForNextPhase;
     private string _phase;
-
+    
     private List<GameObject> enemies = new List<GameObject>();
 
     private void Awake()
     {
         GAME = this;
         POOL = GameObject.FindGameObjectWithTag("Pool").transform;
+
+        //for (int _i = 0; _i < 11; _i++) Debug.Log(_i + ". " + ((int)_i/5));
     }
 
     private void Start()
@@ -74,8 +77,7 @@ public class GameManager : MonoBehaviour
             _readyForNextPhase = false;
             //spawn waves of bad guys
             SpawnWave(_wave);
-            _wave += 2;
-            if (_wave > 25) _wave = 25;
+            _wave ++;
 
             //Refill the seconds (I think 60 for this phase)
             SECONDS_LEFT = 60;
@@ -158,6 +160,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnWave(int _num)
     {
+        _num += 5; if (_num > 25) _num = 25;
         for(int _n = 0; _n < _num; _n++)
         {
             int _random = Random.Range(1, 66);
@@ -195,9 +198,10 @@ public class GameManager : MonoBehaviour
                 x1 = -12; y1 = -2;
                 x2 = -11; y2 = 2;
             }
-
+            
             enemies.Add(Instantiate(monster[_selected_index], new Vector3(Random.Range(x1, x2), Random.Range(y1, y2)), Quaternion.identity));
-
+            enemies[_n].GetComponent<I_am_an_Enemy>().health += (int)(_wave / 5);
+            enemies[_n].GetComponent<I_am_an_Enemy>().damage += sword_bonus;
         }
     }
 
@@ -229,7 +233,7 @@ public class GameManager : MonoBehaviour
         while(SECONDS_LEFT > 0)
         {
             yield return new WaitForSeconds(1f);
-            SECONDS_LEFT--;
+            if(!PAUSED) SECONDS_LEFT--;
         }
 
         //Phase Clean up

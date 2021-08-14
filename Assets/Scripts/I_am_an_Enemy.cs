@@ -83,12 +83,12 @@ public class I_am_an_Enemy : MonoBehaviour
         {
             if (collision.collider.gameObject.tag == "Splosion")
             {
-                Enemy_takes_damage(collision.collider.GetComponent<Boom>().damage);
+                Enemy_takes_damage(collision.collider.GetComponent<Boom>().damage + GameManager.GAME.bomb_bonus);
                 StartCoroutine(Invincible_Timer());
             }
             if (collision.collider.gameObject.tag == "Sword")
             {
-                Enemy_takes_damage(collision.collider.GetComponent<I_am_a_Sword>().damage);
+                Enemy_takes_damage(collision.collider.GetComponent<I_am_a_Sword>().damage + GameManager.GAME.sword_bonus);
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
                 StartCoroutine(Invincible_Timer());
@@ -100,7 +100,7 @@ public class I_am_an_Enemy : MonoBehaviour
             if (collision.collider.gameObject.tag == "Arrow")
             {
                 collision.collider.GetComponent<I_am_an_Arrow>().Stop_Flight();
-                Enemy_takes_damage(collision.collider.GetComponent<I_am_an_Arrow>().damage);
+                Enemy_takes_damage(collision.collider.GetComponent<I_am_an_Arrow>().damage + GameManager.GAME.arrow_bonus);
                 Vector2 dir = collision.collider.transform.position - transform.position;
                 dir = -dir.normalized;
                 GetComponent<Rigidbody2D>().AddForce(dir * 2000);

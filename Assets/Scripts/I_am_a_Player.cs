@@ -172,7 +172,7 @@ public class I_am_a_Player : MonoBehaviour
         {
             if(collision.collider.gameObject.tag == "Splosion")
             {
-                PlayerDamage(collision.collider.GetComponent<Boom>().damage);
+                PlayerDamage(collision.collider.GetComponent<Boom>().damage + GameManager.GAME.bomb_bonus);
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
             }
@@ -190,7 +190,7 @@ public class I_am_a_Player : MonoBehaviour
             }
             if(collision.collider.gameObject.tag == "Rock")
             {
-                PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Arrow>().damage);
+                PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Arrow>().damage + GameManager.GAME.arrow_bonus);
                 collision.collider.gameObject.GetComponent<I_am_an_Arrow>().Stop_Flight();
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
