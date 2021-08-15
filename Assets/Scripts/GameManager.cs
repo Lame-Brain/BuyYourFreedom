@@ -18,12 +18,12 @@ public class GameManager : MonoBehaviour
     public GameObject arrow_prefab, bomb_prefab, rock_prefab, pop_prefab;
     public GameObject HealthUp_prefab, ArmorUp_prefab, CoinUp_prefab, PointsUp_prefab, MoreArrows_prefab, MoreBombs_prefab;
     public GameObject[] floor, wall, monster;
-    public GameObject GUI, InfoPop_prefab, littleInfo_prefab;
+    public GameObject GUI, InfoPop_prefab, littleInfo_prefab, InfoKill_window, InfoLoot_window, InfoBuy_window;
     public int sword_bonus, arrow_bonus, bomb_bonus;
     public Transform MonsterPoolObject, LootRootObject;
 
     private int _wave;
-    private bool _readyForNextPhase;
+    private bool _readyForNextPhase, _InfoKill, _InfoLoot, _InfoBuy;
     private string _phase;
     
     private void Awake()
@@ -45,10 +45,13 @@ public class GameManager : MonoBehaviour
         POINTS = 0;
         FREEDOM = 75000;
 
-        _wave = 25;
+        _wave = 1;
         _readyForNextPhase = true;
         _phase = "KILL";
 
+        _InfoKill = false;
+        _InfoLoot = false;
+        _InfoBuy = false;
         //build level
         for (int _y = -12; _y < 13; _y++)
         {
@@ -70,9 +73,13 @@ public class GameManager : MonoBehaviour
     {
 
         if (QuitPanel.activeSelf && Input.GetButtonUp("Fire1")) Yes_Quit(false);
-        
+
         //Phases
-        if(_readyForNextPhase && _phase == "KILL")
+        if (_readyForNextPhase && _phase == "KILL" && !_InfoKill && !InfoKill_window.activeSelf) InfoKill_window.SetActive(true);
+        if (_readyForNextPhase && _phase == "LOOT" && !_InfoLoot && !InfoLoot_window.activeSelf) InfoLoot_window.SetActive(true);
+        if (_readyForNextPhase && _phase == "BUY" && !_InfoBuy && !InfoBuy_window.activeSelf) InfoBuy_window.SetActive(true);
+
+        if(_readyForNextPhase && _phase == "KILL" && _InfoKill)
         {
             _readyForNextPhase = false;
             //spawn waves of bad guys
@@ -88,7 +95,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Countdown(SECONDS_LEFT));
         }
 
-        if(_readyForNextPhase && _phase == "LOOT")
+        if(_readyForNextPhase && _phase == "LOOT" && _InfoLoot)
         {
             _readyForNextPhase = false;
 
@@ -147,7 +154,7 @@ public class GameManager : MonoBehaviour
             
         }
 
-        if(_readyForNextPhase && _phase == "BUY")
+        if(_readyForNextPhase && _phase == "BUY" && _InfoBuy)
         {
             _readyForNextPhase = false;
             //Pop the store screen
@@ -331,6 +338,13 @@ public class GameManager : MonoBehaviour
             QuitPanel.SetActive(false);
             //Switch back to game music
         }
+    }
+
+    public void Info_OK_Button(int i)
+    {
+        if (i == 1) _InfoKill = true;
+        if (i == 2) _InfoLoot = true;
+        if (i == 3) _InfoBuy = true;
     }
 }
 
