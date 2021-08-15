@@ -10,12 +10,13 @@ public class I_am_an_Dragon : MonoBehaviour
     public float damage;
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
-    public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath;
+    public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath, pre_fire;
 
     Rigidbody2D _rigidBody;
     GameObject _Player;
     float _invincibilityTimer;
     Transform _Target;
+
     //Type behavior variables
     bool _inRange;
     bool _charging;
@@ -31,27 +32,25 @@ public class I_am_an_Dragon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(transform.position, _Player.transform.position) < 2.5f)
+        if (Vector2.Distance(transform.position, _Player.transform.position) < 4.5f)
         {  _inRange = true; } else { _inRange = false; }
+        //Debug.Log("range = " + Vector2.Distance(transform.position, _Player.transform.position));
 
         if (!GameManager.PAUSED)
         {
             if (health > 0)
             {
-                if (!_inRange)
+                if (!_inRange && !_shooting)
                 {
                     _Target = GameObject.FindGameObjectWithTag("Player").transform;
                     transform.up = _Target.position - transform.position; //face player with y axis
                     transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
-                                                                              //chance to play travel sound
+                    //chance to play travel sound
                 }
-                if (_inRange)
+                if (_inRange && !_shooting)
                 {
                     _Target = GameObject.FindGameObjectWithTag("Player").transform;
-                    transform.up = _Target.position - transform.position; //face player with y axis
-                    transform.Translate(Vector2.down * speed * Time.deltaTime); //move back along y axis
-                    transform.Translate(Vector2.right * speed * 2 * Time.deltaTime); //move sideways
-                                                                                     //chance to play travel sound
+                    transform.up = _Target.position - transform.position; //face player with y axis                                                                                     
                 }
                 if (_inRange && _delay == 0) StartCoroutine(MonsterShoots());
             }
@@ -62,29 +61,15 @@ public class I_am_an_Dragon : MonoBehaviour
     {
         if (_invincibilityTimer == 0)
         {
-            if (collision.collider.gameObject.tag == "Splosion")
-            {
-                Enemy_takes_damage(collision.collider.GetComponent<Boom>().damage + GameManager.GAME.bomb_bonus);
-                StartCoroutine(Invincible_Timer());
-            }
             if (collision.collider.gameObject.tag == "Sword")
             {
                 Enemy_takes_damage(collision.collider.GetComponent<I_am_a_Sword>().damage + GameManager.GAME.sword_bonus);
-                Vector2 dir = collision.collider.transform.position - transform.position;
-                dir = -dir.normalized;
                 StartCoroutine(Invincible_Timer());
-                if (health > 0)
-                {
-                    _rigidBody.AddForce(dir * 3000);
-                }
             }
             if (collision.collider.gameObject.tag == "Arrow")
             {
                 collision.collider.GetComponent<I_am_an_Arrow>().Stop_Flight();
                 Enemy_takes_damage(collision.collider.GetComponent<I_am_an_Arrow>().damage + GameManager.GAME.arrow_bonus);
-                Vector2 dir = collision.collider.transform.position - transform.position;
-                dir = -dir.normalized;
-                GetComponent<Rigidbody2D>().AddForce(dir * 2000);
                 StartCoroutine(Invincible_Timer());                
             }
         }
@@ -149,10 +134,20 @@ public class I_am_an_Dragon : MonoBehaviour
     }
     IEnumerator MonsterShoots()
     {
-        _delay = delayBetweenShots;
-        Fire_Breath.SetActive(true);
-        //PLAY FIRE Rock SOUND
+        _delay = delayBetweenShots;        
+        _shooting = true;
+        pre_fire.SetActive(true);
+        //Play Dragon Inhale sound
+        
         yield return new WaitForSeconds(delayBetweenShots);
+        pre_fire.SetActive(false);
+        Fire_Breath.SetActive(true);        
+        _delay = delayBetweenShots / 2;
+        //PLAY Dragon Fire SOUND
+
+        yield return new WaitForSeconds(delayBetweenShots);
+        Fire_Breath.SetActive(false);
+        _shooting = false;
         _delay = 0;
     }
 

@@ -167,9 +167,9 @@ public class I_am_a_Player : MonoBehaviour
 
     //Collision
     private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(_invincibilityTimer == 0)
-        {
+    {   
+        if (_invincibilityTimer == 0)
+        {            
             if(collision.collider.gameObject.tag == "Splosion")
             {
                 PlayerDamage(collision.collider.GetComponent<Boom>().damage + GameManager.GAME.bomb_bonus);
@@ -178,7 +178,8 @@ public class I_am_a_Player : MonoBehaviour
             }
             if(collision.collider.gameObject.tag == "Enemy" || collision.collider.tag == "Heavy Enemy")
             {
-                PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Enemy>().damage);
+                if(collision.collider.gameObject.GetComponent<I_am_an_Enemy>() != null) PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Enemy>().damage);
+                if (collision.collider.gameObject.GetComponent<I_am_an_Dragon>() != null) PlayerDamage(collision.collider.gameObject.GetComponent<I_am_an_Dragon>().damage);
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
                 Vector2 dir = collision.collider.transform.position - transform.position;
@@ -195,7 +196,7 @@ public class I_am_a_Player : MonoBehaviour
                 StartCoroutine(Invincible_Timer());
                 if (GameManager.HEALTH <= 0) PlayerDies();
             }
-        }
+        } 
     }
     
     //Handle Player Damage

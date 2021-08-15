@@ -19,5 +19,9 @@ Enemy Object
 3. Fire Rock Sound
 4. Enemy Hit Shound
 
+Dragon
+1. Inhale Sound
+2. Dragon Fire
+
 Powerups:
 Pickup Sound

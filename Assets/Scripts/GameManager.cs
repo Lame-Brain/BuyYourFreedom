@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
         }
         if(GOLD > 45555)
         {
-            GameObject _monster = Instantiate(monster[11], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
+            GameObject _monster = Instantiate(monster[12], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
             _monster.GetComponentInChildren<I_am_an_Enemy>().health += (int)(_wave / 5);
             _monster.GetComponentInChildren<I_am_an_Enemy>().damage += sword_bonus;
         }
