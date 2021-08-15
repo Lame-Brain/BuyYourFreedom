@@ -13,6 +13,7 @@ public class I_am_an_Dragon : MonoBehaviour
     public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath;
 
     Rigidbody2D _rigidBody;
+    GameObject _Player;
     float _invincibilityTimer;
     Transform _Target;
     //Type behavior variables
@@ -24,11 +25,15 @@ public class I_am_an_Dragon : MonoBehaviour
     private void Start()
     {
         _rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        _Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Vector2.Distance(transform.position, _Player.transform.position) < 2.5f)
+        {  _inRange = true; } else { _inRange = false; }
+
         if (!GameManager.PAUSED)
         {
             if (health > 0)
@@ -92,13 +97,6 @@ public class I_am_an_Dragon : MonoBehaviour
         //Play enemy hit sound
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.name == "Range")
-        {
-            _inRange = true;
-        }
-    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Range") _inRange = false;
@@ -152,11 +150,7 @@ public class I_am_an_Dragon : MonoBehaviour
     IEnumerator MonsterShoots()
     {
         _delay = delayBetweenShots;
-        int _rock_index = 0;
-        for (int _i = 0; _i < GameManager.GAME.ArrowPool.Count; _i++) if (!GameManager.GAME.RockPool[_i].GetComponent<I_am_an_Arrow>().inFlight) _rock_index = _i;
-        GameManager.GAME.RockPool[_rock_index].transform.position = transform.position;
-        GameManager.GAME.RockPool[_rock_index].transform.rotation = transform.rotation;
-        GameManager.GAME.RockPool[_rock_index].GetComponent<I_am_an_Arrow>().Start_Flight();
+        Fire_Breath.SetActive(true);
         //PLAY FIRE Rock SOUND
         yield return new WaitForSeconds(delayBetweenShots);
         _delay = 0;
