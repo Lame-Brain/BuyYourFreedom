@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject GUI, InfoPop_prefab, littleInfo_prefab, InfoKill_window, InfoLoot_window, InfoBuy_window;
     public int sword_bonus, arrow_bonus, bomb_bonus;
     public Transform MonsterPoolObject, LootRootObject;
+    public int Frequency_of_Travel_SFX;
 
     private int _wave;
     private bool _readyForNextPhase, _InfoKill, _InfoLoot, _InfoBuy;

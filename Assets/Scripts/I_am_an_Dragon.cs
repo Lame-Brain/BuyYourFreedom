@@ -10,7 +10,7 @@ public class I_am_an_Dragon : MonoBehaviour
     public float damage;
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
-    public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath, pre_fire;
+    public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath, pre_fire, TextBubble;
 
     Rigidbody2D _rigidBody;
     GameObject _Player;
@@ -33,8 +33,7 @@ public class I_am_an_Dragon : MonoBehaviour
     void Update()
     {
         if (Vector2.Distance(transform.position, _Player.transform.position) < 4.5f)
-        {  _inRange = true; } else { _inRange = false; }
-        //Debug.Log("range = " + Vector2.Distance(transform.position, _Player.transform.position));
+        {  _inRange = true; } else { _inRange = false; }        
 
         if (!GameManager.PAUSED)
         {

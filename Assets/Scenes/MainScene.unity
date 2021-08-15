@@ -2227,6 +2227,7 @@ MonoBehaviour:
   bomb_bonus: 0
   MonsterPoolObject: {fileID: 1417717765}
   LootRootObject: {fileID: 356691065}
+  Frequency_of_Travel_SFX: 10000
 --- !u!4 &683364869
 Transform:
   m_ObjectHideFlags: 0

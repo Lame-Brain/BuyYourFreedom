@@ -12,7 +12,7 @@ public class I_am_an_Enemy : MonoBehaviour
     public float damage;
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
-    public GameObject Grave_Prefab, Poof_Prefab;
+    public GameObject Grave_Prefab, Poof_Prefab, TextBubble;
     public AudioSource SFX, TravelSFX, OOF_SFX, ActionSFX;
 
     Rigidbody2D _rigidBody;
@@ -38,7 +38,9 @@ public class I_am_an_Enemy : MonoBehaviour
                 _Target = GameObject.FindGameObjectWithTag("Player").transform;
                 transform.up = _Target.position - transform.position; //face player with y axis
                 transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis              
-                                                                          //chance to play travel sound
+                //chance to play travel sound
+                int _r = Random.Range(0, GameManager.GAME.Frequency_of_Travel_SFX); if (_r == 0) StartCoroutine(TravelSoundPlay());
+
             }
             if (type == Monster.charger && health > 0)
             {
@@ -47,7 +49,8 @@ public class I_am_an_Enemy : MonoBehaviour
                     _Target = GameObject.FindGameObjectWithTag("Player").transform;
                     transform.up = _Target.position - transform.position; //face player with y axis
                     transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
-                                                                              //chance to play travel sound
+                    //chance to play travel sound
+                    int _r = Random.Range(0, GameManager.GAME.Frequency_of_Travel_SFX); if (_r == 0) StartCoroutine(TravelSoundPlay());
                 }
                 if (_inRange && _delay == 0 && !_charging)
                 {
@@ -64,6 +67,7 @@ public class I_am_an_Enemy : MonoBehaviour
                     transform.up = _Target.position - transform.position; //face player with y axis
                     transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
                                                                               //chance to play travel sound
+                    int _r = Random.Range(0, GameManager.GAME.Frequency_of_Travel_SFX); if (_r == 0) StartCoroutine(TravelSoundPlay());
                 }
                 if (_inRange)
                 {
@@ -72,6 +76,7 @@ public class I_am_an_Enemy : MonoBehaviour
                     transform.Translate(Vector2.down * speed * Time.deltaTime); //move back along y axis
                     transform.Translate(Vector2.right * speed * 2 * Time.deltaTime); //move sideways
                                                                                      //chance to play travel sound
+                    int _r = Random.Range(0, GameManager.GAME.Frequency_of_Travel_SFX); if (_r == 0) StartCoroutine(TravelSoundPlay());
                 }
                 if (_inRange && _delay == 0) StartCoroutine(MonsterShoots());
             }
@@ -115,6 +120,7 @@ public class I_am_an_Enemy : MonoBehaviour
         if (health <= 0) EnemyDies();
         GameManager.GAME.LittleTextPop(transform.position, "-" + _d);
         //Play enemy hit sound
+        if (!OOF_SFX.isPlaying) SFX.PlayOneShot(OOF_SFX.clip);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -183,6 +189,7 @@ public class I_am_an_Enemy : MonoBehaviour
         GameManager.GAME.RockPool[_rock_index].transform.rotation = transform.rotation;
         GameManager.GAME.RockPool[_rock_index].GetComponent<I_am_an_Arrow>().Start_Flight();
         //PLAY FIRE Rock SOUND
+        if (!ActionSFX.isPlaying) SFX.PlayOneShot(ActionSFX.clip);
         yield return new WaitForSeconds(delayBetweenShots);
         _delay = 0;
     }
@@ -193,5 +200,16 @@ public class I_am_an_Enemy : MonoBehaviour
         _rigidBody.angularVelocity = 0f;
         yield return new WaitForSeconds(2f);
         Destroy(gameObject.transform.parent.gameObject);
+    }
+
+    IEnumerator TravelSoundPlay()
+    {
+        if (!TravelSFX.isPlaying)
+        {
+            SFX.PlayOneShot(TravelSFX.clip);
+            TextBubble.SetActive(true);
+            yield return new WaitForSeconds(1);
+            TextBubble.SetActive(false);
+        }        
     }
 }
