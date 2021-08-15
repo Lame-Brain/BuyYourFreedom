@@ -67,6 +67,10 @@ MonoBehaviour:
   max_Bombs: 0
   Grave_Prefab: {fileID: 2829454452930074196, guid: 3bad6fd76f2f1f945a28e79d123650f7, type: 3}
   Poof_Prefab: {fileID: 6357043026741950581, guid: 2b7674a62b257ef4fbe50162b9ff41bb, type: 3}
+  SFX: {fileID: 8230128881809068604}
+  TravelSFX: {fileID: 2772683214062656357}
+  OOF_SFX: {fileID: 535191835451673259}
+  ActionSFX: {fileID: 6749250459198181146}
 --- !u!50 &1798481153890608567
 Rigidbody2D:
   serializedVersion: 4

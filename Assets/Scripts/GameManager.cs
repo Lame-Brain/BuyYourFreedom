@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         POINTS = 0;
         FREEDOM = 75000;
 
-        _wave = 1;
+        _wave = 25;
         _readyForNextPhase = true;
         _phase = "KILL";
 
@@ -223,9 +223,9 @@ public class GameManager : MonoBehaviour
         }
         if(GOLD > 45555)
         {
-            GameObject _monster = Instantiate(monster[12], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
-            _monster.GetComponentInChildren<I_am_an_Enemy>().health += (int)(_wave / 5);
-            _monster.GetComponentInChildren<I_am_an_Enemy>().damage += sword_bonus;
+            GameObject _monster = Instantiate(monster[11], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
+            _monster.GetComponentInChildren<I_am_an_Dragon>().health += (int)(_wave / 5);
+            _monster.GetComponentInChildren<I_am_an_Dragon>().damage += sword_bonus;
         }
     }
 

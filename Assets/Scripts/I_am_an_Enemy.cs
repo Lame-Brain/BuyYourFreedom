@@ -13,6 +13,7 @@ public class I_am_an_Enemy : MonoBehaviour
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
     public GameObject Grave_Prefab, Poof_Prefab;
+    public AudioSource SFX, TravelSFX, OOF_SFX, ActionSFX;
 
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
