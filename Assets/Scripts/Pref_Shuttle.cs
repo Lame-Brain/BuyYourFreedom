@@ -15,6 +15,7 @@ public class Pref_Shuttle : MonoBehaviour
         {
             PREF = gameObject.GetComponent<Pref_Shuttle>();
             DontDestroyOnLoad(gameObject);
+            Tutorials = true;
         }
         else
         {

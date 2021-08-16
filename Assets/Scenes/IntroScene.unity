@@ -677,12 +677,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Arrow Keys Move
 
-    Left CTRL fires weapon
+    Z fires weapon
 
-    Left ALT cycles weapon
-    select
+    X cycles weapon select
 
-    Left Shift to Dash'
+    Left
+    Shift to Dash'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -867,7 +867,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc9547414f35a84db8c48deea8770a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tutorials: 0
+  Tutorials: 1
+  MyPoints: 0
 --- !u!4 &1117308650
 Transform:
   m_ObjectHideFlags: 0
@@ -914,7 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f1b6ece8ba85c4ca49b0087aa84255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tutorials: 0
+  Tutorials: 1
   Toggle: {fileID: 1589411408}
 --- !u!114 &1144266097
 MonoBehaviour:

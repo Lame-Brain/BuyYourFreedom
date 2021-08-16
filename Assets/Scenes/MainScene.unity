@@ -7389,6 +7389,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 785822247025132707, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
+      propertyPath: speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 785822247025132707, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
       propertyPath: OuchSFX
       value: 
       objectReference: {fileID: 1959090716}
@@ -7412,6 +7416,10 @@ PrefabInstance:
       propertyPath: SlashSFX
       value: 
       objectReference: {fileID: 167780317}
+    - target: {fileID: 785822247025132707, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
+      propertyPath: dashModifier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 785822247025132707, guid: 57d59f4e3da2d6a448b59a87bae1e14d, type: 3}
       propertyPath: dash_reloadTime
       value: 5
