@@ -10,6 +10,7 @@ public class I_am_a_Player : MonoBehaviour
     public bool canMove;
     public float speed, dashModifier, arrow_reloadTime, bomb_reloadTime;
     public Weapons selectedWeapon;
+    public AudioSource SlashSFX, OuchSFX, TinkSFX, ClickSFX;
 
     bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection, _ready_arrow, _ready_bomb;
     Directions _facing, _old_facing, _new_facing;
@@ -89,7 +90,7 @@ public class I_am_a_Player : MonoBehaviour
         if (_move_up || _move_left || _move_down || _move_right) transform.Translate(Vector2.up * _totalSpeed * Time.deltaTime);
 
         //Slashing Sound
-        //if(selectedWeapon == Weapons.Sword && _changedDirection) Play Slashing AudioClip
+        if (selectedWeapon == Weapons.Sword && _changedDirection) SlashSFX.PlayOneShot(SlashSFX.clip);
 
         //Button 1 (fire selected weapon)
         if(_button1 && selectedWeapon == Weapons.Arrow && _ready_arrow && GameManager.ARROWS > 0)
@@ -121,12 +122,12 @@ public class I_am_a_Player : MonoBehaviour
         //Button 2 (change weapon selection)
         if (_button2)
         {
-            if (selectedWeapon == Weapons.Sword) { selectedWeapon = Weapons.Arrow; _button2 = false; }
-            if (selectedWeapon == Weapons.Arrow && _button2) { selectedWeapon = Weapons.Bomb; _button2 = false; }
-            if (selectedWeapon == Weapons.Arrow && GameManager.ARROWS < 1) selectedWeapon = Weapons.Bomb;
-            if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; }
-            if (selectedWeapon == Weapons.Bomb && GameManager.BOMBS < 1) selectedWeapon = Weapons.Sword;
-        }
+            if (selectedWeapon == Weapons.Sword) { selectedWeapon = Weapons.Arrow; _button2 = false; ClickSFX.PlayOneShot(ClickSFX.clip); }
+            if (selectedWeapon == Weapons.Arrow && _button2) { selectedWeapon = Weapons.Bomb; _button2 = false; ClickSFX.PlayOneShot(ClickSFX.clip); }
+            if (selectedWeapon == Weapons.Arrow && GameManager.ARROWS < 1) { selectedWeapon = Weapons.Bomb; ClickSFX.PlayOneShot(ClickSFX.clip); }
+                if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; SlashSFX.PlayOneShot(ClickSFX.clip); }
+            if (selectedWeapon == Weapons.Bomb && GameManager.BOMBS < 1) { selectedWeapon = Weapons.Sword; SlashSFX.PlayOneShot(ClickSFX.clip); }
+            }
 
         //Weapon Selection
         if(selectedWeapon == Weapons.None)
@@ -209,10 +210,12 @@ public class I_am_a_Player : MonoBehaviour
         if(_adjustedDamage == 0)
         {
             //Play armor tink sound
+            if (!OuchSFX.isPlaying && !TinkSFX.isPlaying) TinkSFX.PlayOneShot(TinkSFX.clip);
         }
         else
         {
             //Play player ouch sound
+            if(!OuchSFX.isPlaying && !TinkSFX.isPlaying) OuchSFX.PlayOneShot(OuchSFX.clip);
             GameManager.GAME.InfoTextPop(transform.position, "-" + _adjustedDamage, Color.red);
         }
 

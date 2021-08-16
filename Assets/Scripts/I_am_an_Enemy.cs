@@ -13,7 +13,7 @@ public class I_am_an_Enemy : MonoBehaviour
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
     public GameObject Grave_Prefab, Poof_Prefab, TextBubble;
-    public AudioSource SFX, TravelSFX, OOF_SFX, ActionSFX;
+    public AudioSource SFX, TravelSFX, OOF_SFX, ActionSFX, DieSFX;
 
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
@@ -158,6 +158,7 @@ public class I_am_an_Enemy : MonoBehaviour
         Instantiate(Poof_Prefab, transform.position, Quaternion.identity);
         myFace.GetComponent<Animator>().SetBool("Dead", true);
         StartCoroutine(WaitForDeath());
+        if (!DieSFX.isPlaying) SFX.PlayOneShot(DieSFX.clip);
     }
 
     IEnumerator Invincible_Timer()
@@ -175,6 +176,7 @@ public class I_am_an_Enemy : MonoBehaviour
         yield return new WaitForSeconds(delayBetweenShots);
         _charging = true;
         //Play Charging Sound
+        StartCoroutine(ChargeSoundPlay());
         yield return new WaitForSeconds(1);
         _charging = false;
         yield return new WaitForSeconds(delayBetweenShots);
@@ -211,5 +213,16 @@ public class I_am_an_Enemy : MonoBehaviour
             yield return new WaitForSeconds(1);
             TextBubble.SetActive(false);
         }        
+    }
+
+    IEnumerator ChargeSoundPlay()
+    {
+        if (!ActionSFX.isPlaying)
+        {
+            SFX.PlayOneShot(ActionSFX.clip);
+            TextBubble.SetActive(true);
+            yield return new WaitForSeconds(1);
+            TextBubble.SetActive(false);
+        }
     }
 }

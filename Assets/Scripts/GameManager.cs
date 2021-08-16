@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
         _wave = 1;
         _readyForNextPhase = true;
-        _phase = "KILL";
+        _phase = "KILL1";
 
         _InfoKill = false;
         _InfoLoot = false;

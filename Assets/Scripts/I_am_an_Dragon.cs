@@ -11,6 +11,7 @@ public class I_am_an_Dragon : MonoBehaviour
     public float delayBetweenShots;
     public int min_hearts, max_hearts, min_shields, max_shields, min_coins, max_coins, min_bags, max_bags, min_points, max_points, min_Arrows, max_Arrows, min_Bombs, max_Bombs;
     public GameObject Grave_Prefab, Poof_Prefab, Fire_Breath, pre_fire, TextBubble;
+    public AudioSource SFX, inhaleSFX, exhaleSFX, TravelSFX, OOF_SFX, DieSFX;
 
     Rigidbody2D _rigidBody;
     GameObject _Player;
@@ -19,7 +20,7 @@ public class I_am_an_Dragon : MonoBehaviour
 
     //Type behavior variables
     bool _inRange;
-    bool _charging;
+    //bool _charging;
     float _delay;
     bool _shooting;
 
@@ -45,6 +46,7 @@ public class I_am_an_Dragon : MonoBehaviour
                     transform.up = _Target.position - transform.position; //face player with y axis
                     transform.Translate(Vector2.up * speed * Time.deltaTime); //move along y axis
                     //chance to play travel sound
+                    int _r = Random.Range(0, GameManager.GAME.Frequency_of_Travel_SFX); if (_r == 0) StartCoroutine(TravelSoundPlay());
                 }
                 if (_inRange && !_shooting)
                 {
@@ -120,29 +122,20 @@ public class I_am_an_Dragon : MonoBehaviour
         _invincibilityTimer = 0;
     }
 
-    IEnumerator MonsterCharges()
-    {
-        _delay = delayBetweenShots;
-        yield return new WaitForSeconds(delayBetweenShots);
-        _charging = true;
-        //Play Charging Sound
-        yield return new WaitForSeconds(1);
-        _charging = false;
-        yield return new WaitForSeconds(delayBetweenShots);
-        _delay = 0;
-    }
     IEnumerator MonsterShoots()
     {
         _delay = delayBetweenShots;        
         _shooting = true;
         pre_fire.SetActive(true);
         //Play Dragon Inhale sound
+        if (!inhaleSFX.isPlaying) SFX.PlayOneShot(inhaleSFX.clip);
         
         yield return new WaitForSeconds(delayBetweenShots);
         pre_fire.SetActive(false);
         Fire_Breath.SetActive(true);        
         _delay = delayBetweenShots / 2;
         //PLAY Dragon Fire SOUND
+        if (!exhaleSFX.isPlaying) SFX.PlayOneShot(exhaleSFX.clip);
 
         yield return new WaitForSeconds(delayBetweenShots);
         Fire_Breath.SetActive(false);
@@ -156,5 +149,15 @@ public class I_am_an_Dragon : MonoBehaviour
         _rigidBody.angularVelocity = 0f;
         yield return new WaitForSeconds(2f);
         Destroy(gameObject.transform.parent.gameObject);
+    }
+    IEnumerator TravelSoundPlay()
+    {
+        if (!TravelSFX.isPlaying)
+        {
+            SFX.PlayOneShot(TravelSFX.clip);
+            TextBubble.SetActive(true);
+            yield return new WaitForSeconds(1);
+            TextBubble.SetActive(false);
+        }
     }
 }
