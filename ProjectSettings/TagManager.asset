@@ -16,6 +16,7 @@ TagManager:
   - Heavy Enemy
   - MonsterPool
   - LootRoot
+  - Pref
   layers:
   - Default
   - TransparentFX

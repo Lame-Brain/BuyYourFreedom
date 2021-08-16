@@ -209,9 +209,9 @@ public class I_am_an_Enemy : MonoBehaviour
         if (!TravelSFX.isPlaying)
         {
             SFX.PlayOneShot(TravelSFX.clip);
-            TextBubble.SetActive(true);
+            if (TextBubble != null) TextBubble.SetActive(true);
             yield return new WaitForSeconds(1);
-            TextBubble.SetActive(false);
+            if (TextBubble != null) TextBubble.SetActive(false);
         }        
     }
 
@@ -220,9 +220,9 @@ public class I_am_an_Enemy : MonoBehaviour
         if (!ActionSFX.isPlaying)
         {
             SFX.PlayOneShot(ActionSFX.clip);
-            TextBubble.SetActive(true);
+            if (TextBubble != null) TextBubble.SetActive(true);
             yield return new WaitForSeconds(1);
-            TextBubble.SetActive(false);
+            if(TextBubble != null) TextBubble.SetActive(false);
         }
     }
 }

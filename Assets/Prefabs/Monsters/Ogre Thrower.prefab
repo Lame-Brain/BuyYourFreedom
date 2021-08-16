@@ -793,6 +793,7 @@ MonoBehaviour:
   TravelSFX: {fileID: 4043635443199415947}
   OOF_SFX: {fileID: 1797973700266657940}
   ActionSFX: {fileID: 4019270009611678744}
+  DieSFX: {fileID: 1280201894191646725}
 --- !u!50 &6313197646680512780
 Rigidbody2D:
   serializedVersion: 4

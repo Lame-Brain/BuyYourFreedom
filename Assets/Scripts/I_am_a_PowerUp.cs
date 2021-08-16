@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class I_am_a_PowerUp : MonoBehaviour
 {
-    public int health, armor, gold, points, arrows, bombs;
+    public int health, armor, gold, points, arrows, bombs;    
 
     private void OnCollisionEnter2D(Collision2D collision)
-    { 
-        //Play powerup sound
+    {
+        //PickupSFX.PlayOneShot(PickupSFX.clip);
+        GameManager.GAME.PlayPickupSFX();
+        
 
-        if(health > 0) 
+        if (health > 0) 
         {
             GameManager.HEALTH += health;
             GameManager.GAME.InfoTextPop(transform.position, "+" + health, Color.red);

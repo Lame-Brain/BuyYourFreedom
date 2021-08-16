@@ -6,13 +6,13 @@ public class I_am_a_Player : MonoBehaviour
 {
     public enum Directions { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest }
     public enum Weapons { None, Sword, Arrow, Bomb }
-    public GameObject myFace;
+    public GameObject myFace, DashIndicator;
     public bool canMove;
-    public float speed, dashModifier, arrow_reloadTime, bomb_reloadTime;
+    public float speed, dashModifier, dash_reloadTime, arrow_reloadTime, bomb_reloadTime;
     public Weapons selectedWeapon;
-    public AudioSource SlashSFX, OuchSFX, TinkSFX, ClickSFX;
+    public AudioSource SlashSFX, OuchSFX, TinkSFX, ClickSFX, TwipSFX, PlopSFX;
 
-    bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection, _ready_arrow, _ready_bomb;
+    bool _move_up, _move_right, _move_down, _move_left, _button1, _button2, _button3, _Esc, _changedDirection, _ready_arrow, _ready_bomb, _dashing = false, _dashReload = false;
     Directions _facing, _old_facing, _new_facing;
     Rigidbody2D _rigidBody;
     float _invincibilityTimer;
@@ -82,10 +82,9 @@ public class I_am_a_Player : MonoBehaviour
         if (_facing == Directions.West) transform.eulerAngles = new Vector3(0, 0, 90);
         if (_facing == Directions.NorthWest) transform.eulerAngles = new Vector3(0, 0, 45);
         float _totalSpeed = speed;
-        if (_button3)
+        if (_dashing)
         {
-            _totalSpeed += dashModifier;            
-            //Play Dash AudioClip
+            _totalSpeed += dashModifier;                        
         }
         if (_move_up || _move_left || _move_down || _move_right) transform.Translate(Vector2.up * _totalSpeed * Time.deltaTime);
 
@@ -103,6 +102,7 @@ public class I_am_a_Player : MonoBehaviour
             GameManager.ARROWS--;
             _button1 = false;
             //PLAY FIRE ARROW SOUND
+            if (!TwipSFX.isPlaying) TwipSFX.PlayOneShot(TwipSFX.clip);
         }
         if(_button1 && selectedWeapon == Weapons.Bomb && _ready_bomb && GameManager.BOMBS > 0)
         {
@@ -117,6 +117,7 @@ public class I_am_a_Player : MonoBehaviour
             GameManager.BOMBS--;
             _button2 = false;
             //PLAY BOMB PLOP SOUND
+            if (!PlopSFX.isPlaying) PlopSFX.PlayOneShot(PlopSFX.clip);
         }
 
         //Button 2 (change weapon selection)
@@ -125,9 +126,15 @@ public class I_am_a_Player : MonoBehaviour
             if (selectedWeapon == Weapons.Sword) { selectedWeapon = Weapons.Arrow; _button2 = false; ClickSFX.PlayOneShot(ClickSFX.clip); }
             if (selectedWeapon == Weapons.Arrow && _button2) { selectedWeapon = Weapons.Bomb; _button2 = false; ClickSFX.PlayOneShot(ClickSFX.clip); }
             if (selectedWeapon == Weapons.Arrow && GameManager.ARROWS < 1) { selectedWeapon = Weapons.Bomb; ClickSFX.PlayOneShot(ClickSFX.clip); }
-                if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; SlashSFX.PlayOneShot(ClickSFX.clip); }
+            if (selectedWeapon == Weapons.Bomb && _button2) { selectedWeapon = Weapons.Sword; _button2 = false; SlashSFX.PlayOneShot(ClickSFX.clip); }
             if (selectedWeapon == Weapons.Bomb && GameManager.BOMBS < 1) { selectedWeapon = Weapons.Sword; SlashSFX.PlayOneShot(ClickSFX.clip); }
-            }
+        }
+
+        //Button 3 (Dash)
+        if(_button3 && !_dashing && !_dashReload)
+        {
+            StartCoroutine(ReloadDash());
+        }
 
         //Weapon Selection
         if(selectedWeapon == Weapons.None)
@@ -225,6 +232,7 @@ public class I_am_a_Player : MonoBehaviour
     //Handle Player Death
     public void PlayerDies()
     {
+        Pref_Shuttle.PREF.MyPoints = (int)GameManager.POINTS;
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
@@ -237,6 +245,20 @@ public class I_am_a_Player : MonoBehaviour
         _invincibilityTimer = 0;
     }
 
+    IEnumerator ReloadDash()
+    {
+        _dashing = true;
+        _dashReload = true;
+        DashIndicator.SetActive(false);
+        GameManager.GAME.PlayWhooshSFX();
+        yield return new WaitForSeconds(dash_reloadTime);
+        _dashing = false;
+        GameManager.GAME.PlayWhooshSFX();
+        yield return new WaitForSeconds(dash_reloadTime / 2);
+        _dashReload = false;
+        DashIndicator.SetActive(true);
+        GameManager.GAME.PlayWhooshSFX();
+    }
     IEnumerator ReloadArrow()
     {
         _ready_arrow = false;

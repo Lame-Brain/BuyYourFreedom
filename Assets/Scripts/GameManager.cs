@@ -22,11 +22,14 @@ public class GameManager : MonoBehaviour
     public int sword_bonus, arrow_bonus, bomb_bonus;
     public Transform MonsterPoolObject, LootRootObject;
     public int Frequency_of_Travel_SFX;
+    public AudioSource PickupSFX, BossaNova, CoinSFX, TinkSFX, WhooshSFX;
+    public List<AudioSource> MusicTrack = new List<AudioSource>();
 
     private int _wave;
     private bool _readyForNextPhase, _InfoKill, _InfoLoot, _InfoBuy;
     private string _phase;
-    
+    private int _SelectedMusicTrack = 0;
+
     private void Awake()
     {
         GAME = this;
@@ -37,6 +40,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //Read Pref Shuttle
+        if(GameObject.FindGameObjectWithTag("Pref") == null)
+        {
+            _InfoKill = false;
+            _InfoLoot = false;
+            _InfoBuy = false;
+        }
+        else
+        {            
+            _InfoKill = !Pref_Shuttle.PREF.Tutorials;
+            _InfoLoot = !Pref_Shuttle.PREF.Tutorials;
+            _InfoBuy = !Pref_Shuttle.PREF.Tutorials;
+        }
+
         //Default player
         HEALTH = 25;
         ARMOR = 0;
@@ -48,11 +65,9 @@ public class GameManager : MonoBehaviour
 
         _wave = 1;
         _readyForNextPhase = true;
-        _phase = "KILL1";
+        _phase = "KILL";
+                
 
-        _InfoKill = false;
-        _InfoLoot = false;
-        _InfoBuy = false;
         //build level
         for (int _y = -12; _y < 13; _y++)
         {
@@ -80,12 +95,18 @@ public class GameManager : MonoBehaviour
         if (_readyForNextPhase && _phase == "LOOT" && !_InfoLoot && !InfoLoot_window.activeSelf) InfoLoot_window.SetActive(true);
         if (_readyForNextPhase && _phase == "BUY" && !_InfoBuy && !InfoBuy_window.activeSelf) InfoBuy_window.SetActive(true);
 
-        if(_readyForNextPhase && _phase == "KILL" && _InfoKill)
+        if (_readyForNextPhase && _phase == "KILL" && _InfoKill)
         {
+            //MUSIC
+            if (MusicTrack[_SelectedMusicTrack].isPlaying) MusicTrack[_SelectedMusicTrack].Stop();
+            _SelectedMusicTrack = Random.Range(0, MusicTrack.Count);
+            MusicTrack[_SelectedMusicTrack].Play();
+            if (BossaNova.isPlaying) BossaNova.Stop();
+
             _readyForNextPhase = false;
             //spawn waves of bad guys
             SpawnWave(_wave);
-            _wave ++;
+            _wave++;
             GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().Init_Play();
 
 
@@ -96,7 +117,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Countdown(SECONDS_LEFT));
         }
 
-        if(_readyForNextPhase && _phase == "LOOT" && _InfoLoot)
+        if (_readyForNextPhase && _phase == "LOOT" && _InfoLoot)
         {
             _readyForNextPhase = false;
 
@@ -104,7 +125,7 @@ public class GameManager : MonoBehaviour
             {
                 float _delta = 1f;
                 GameObject _hpUp = null, _apUp = null, _xpUp = null, _gpUp = null, _arrwUp = null, _bmbUp = null;
-                foreach(GameObject _go in GameObject.FindGameObjectsWithTag("Grave"))
+                foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Grave"))
                 {
                     //Convert all graves into loot
                     Instantiate(pop_prefab, _go.transform.position, Quaternion.identity);
@@ -138,29 +159,31 @@ public class GameManager : MonoBehaviour
                     Destroy(_go);
                 }
 
-                for(int _i = 0; _i < LootRootObject.childCount; _i++)
+                for (int _i = 0; _i < LootRootObject.childCount; _i++)
                 {
                     if (LootRootObject.GetChild(_i).position.x > 12.5f) LootRootObject.GetChild(_i).position = new Vector2(12.5f, LootRootObject.GetChild(_i).position.y);
                     if (LootRootObject.GetChild(_i).position.x < -12.5f) LootRootObject.GetChild(_i).position = new Vector2(-12.5f, LootRootObject.GetChild(_i).position.y);
                     if (LootRootObject.GetChild(_i).position.y > 12.5f) LootRootObject.GetChild(_i).position = new Vector2(LootRootObject.GetChild(_i).position.x, 12.5f);
                     if (LootRootObject.GetChild(_i).position.y < -12.5f) LootRootObject.GetChild(_i).position = new Vector2(LootRootObject.GetChild(_i).position.x, -12.5f);
-            }
+                }
 
-            //10 seconds on the clock
-            SECONDS_LEFT = 10;                
+                //10 seconds on the clock
+                SECONDS_LEFT = 10;
 
                 //Start the timer
-                StartCoroutine(Countdown(SECONDS_LEFT));                
+                StartCoroutine(Countdown(SECONDS_LEFT));
             }
-            
+
         }
 
-        if(_readyForNextPhase && _phase == "BUY" && _InfoBuy)
+        if (_readyForNextPhase && _phase == "BUY" && _InfoBuy)
         {
+            MusicTrack[_SelectedMusicTrack].Pause();
+            BossaNova.Play();
             _readyForNextPhase = false;
             //Pop the store screen
             StorePanel.SetActive(true);
-            StorePanel.GetComponent<I_am_a_Store>().InitStore();           
+            StorePanel.GetComponent<I_am_a_Store>().InitStore();
 
             //Switch to store music
 
@@ -187,7 +210,7 @@ public class GameManager : MonoBehaviour
     public void SpawnWave(int _t)
     {
         int _num = _t + 4; if (_num > 25) _num = 25;
-        for(int _n = 0; _n < _num; _n++)
+        for (int _n = 0; _n < _num; _n++)
         {
             int _random = Random.Range(1, 67);
             int _selected_index = 0;
@@ -203,7 +226,7 @@ public class GameManager : MonoBehaviour
             if (_random == 66) _selected_index = 10;
 
 
-            int x1 = 0, x2 = 0, y1 = 0, y2 = 0, zone = Random.Range(1,5);
+            int x1 = 0, x2 = 0, y1 = 0, y2 = 0, zone = Random.Range(1, 5);
             if (zone == 1) //North Gate
             {
                 x1 = -2; y1 = 11;
@@ -229,7 +252,7 @@ public class GameManager : MonoBehaviour
             _monster.GetComponentInChildren<I_am_an_Enemy>().health += (int)(_wave / 5);
             _monster.GetComponentInChildren<I_am_an_Enemy>().damage += sword_bonus;
         }
-        if(GOLD > 45555)
+        if (GOLD > 45555)
         {
             GameObject _monster = Instantiate(monster[11], new Vector3(12 * Random.Range(-1, 1), 12 * Random.Range(-1, 1)), Quaternion.identity, MonsterPoolObject);
             _monster.GetComponentInChildren<I_am_an_Dragon>().health += (int)(_wave / 5);
@@ -262,17 +285,17 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Countdown(int _c)
     {
-        while(SECONDS_LEFT > 0)
+        while (SECONDS_LEFT > 0)
         {
             yield return new WaitForSeconds(1f);
-            if(!PAUSED) SECONDS_LEFT--;
+            if (!PAUSED) SECONDS_LEFT--;
             if (_phase == "KILL" && MonsterPoolObject.childCount == 0) SECONDS_LEFT = 0;
             if (_phase == "LOOT" && LootRootObject.childCount == 0) SECONDS_LEFT = 0;
             if (_phase == "BUY" && GOLD <= 0) SECONDS_LEFT = 0;
         }
 
         //Phase Clean up
-        if(_phase == "KILL" && !_readyForNextPhase)
+        if (_phase == "KILL" && !_readyForNextPhase)
         {
             //Destroy any remaining enemies
             foreach (GameObject _enemy in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -289,8 +312,8 @@ public class GameManager : MonoBehaviour
             _phase = "LOOT";
             _readyForNextPhase = true;
         }
-        
-        if(_phase == "LOOT" && !_readyForNextPhase)
+
+        if (_phase == "LOOT" && !_readyForNextPhase)
         {
             //Destroy any remaining Powerups
             foreach (GameObject _pu in GameObject.FindGameObjectsWithTag("PowerUp"))
@@ -302,11 +325,11 @@ public class GameManager : MonoBehaviour
             _phase = "BUY";
             _readyForNextPhase = true;
         }
-        
-        if(_phase == "BUY" && !_readyForNextPhase)
-        {            
+
+        if (_phase == "BUY" && !_readyForNextPhase)
+        {
             StorePanel.SetActive(false);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().canMove = true;            
+            GameObject.FindGameObjectWithTag("Player").GetComponent<I_am_a_Player>().canMove = true;
             _phase = "KILL";
             _readyForNextPhase = true;
         }
@@ -316,7 +339,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject _popup;
         Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _pos);
-        
+
         _popup = Instantiate(InfoPop_prefab, _screenPoint, Quaternion.identity, GUI.transform);
         _popup.GetComponent<TMPro.TextMeshProUGUI>().text = _message;
         _popup.GetComponent<TMPro.TextMeshProUGUI>().color = _color;
@@ -325,15 +348,15 @@ public class GameManager : MonoBehaviour
     {
         GameObject _popup;
         Vector2 _screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _pos);
-        
+
         _popup = Instantiate(littleInfo_prefab, _screenPoint, Quaternion.identity, GUI.transform);
         _popup.GetComponent<TMPro.TextMeshProUGUI>().text = _message;
     }
 
-    public void Yes_Quit(bool yes) 
+    public void Yes_Quit(bool yes)
     {
         PAUSED = false;
-        if(yes) UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        if (yes) UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         if (!yes)
         {
             QuitPanel.SetActive(false);
@@ -347,5 +370,13 @@ public class GameManager : MonoBehaviour
         if (i == 2) _InfoLoot = true;
         if (i == 3) _InfoBuy = true;
     }
+
+    public void PlayPickupSFX() { PickupSFX.PlayOneShot(PickupSFX.clip); }
+
+    public void PlayCoinSFX() { PickupSFX.PlayOneShot(CoinSFX.clip); }
+
+    public void PlayTinkSFX() { PickupSFX.PlayOneShot(TinkSFX.clip); }
+
+    public void PlayWhooshSFX() { if(!PickupSFX.isPlaying) PickupSFX.PlayOneShot(WhooshSFX.clip); }
 }
 

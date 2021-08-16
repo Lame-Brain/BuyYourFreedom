@@ -90,18 +90,20 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.HEALTH += 10;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 0 && GameManager.GOLD < (HP_UP + (int)_inflation)) Play Failure Sound
+                else if (selected == 0 && GameManager.GOLD < (HP_UP + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
-                if(selected == 1 && GameManager.GOLD >= (AP_UP + (int)_inflation))
+                if (selected == 1 && GameManager.GOLD >= (AP_UP + (int)_inflation))
                 {
                     GameManager.GOLD -= (AP_UP + (int)_inflation);
                     _goldSpent += (AP_UP + (int)_inflation);
                     GameManager.ARMOR += 1;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 1 && GameManager.GOLD < (AP_UP + (int)_inflation)) Play Failure Sound
+                else if (selected == 1 && GameManager.GOLD < (AP_UP + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 2 && GameManager.GOLD >= (Arrows + (int)_inflation))
                 {
@@ -110,8 +112,9 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.ARROWS += 5;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 2 && GameManager.GOLD < (Arrows + (int)_inflation)) Play Failure Sound
+                else if (selected == 2 && GameManager.GOLD < (Arrows + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 3 && GameManager.GOLD >= (Bombs + (int)_inflation))
                 {
@@ -120,8 +123,9 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.BOMBS++;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 3 && GameManager.GOLD < (Bombs + (int)_inflation)) Play Failure Sound
+                else if (selected == 3 && GameManager.GOLD < (Bombs + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 4 && GameManager.GOLD >= (Swrd_Up + (int)_inflation))
                 {
@@ -130,8 +134,9 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.GAME.sword_bonus++;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 4 && GameManager.GOLD < (Swrd_Up + (int)_inflation)) Play Failure Sound
+                else if (selected == 4 && GameManager.GOLD < (Swrd_Up + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 5 && GameManager.GOLD >= (Arrw_Up + (int)_inflation))
                 {
@@ -140,8 +145,9 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.GAME.arrow_bonus++;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 5 && GameManager.GOLD < (Arrw_Up + (int)_inflation)) Play Failure Sound
+                else if (selected == 5 && GameManager.GOLD < (Arrw_Up + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 6 && GameManager.GOLD >= (Bmbs_Up + (int)_inflation))
                 {
@@ -150,8 +156,9 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.GAME.bomb_bonus++;
                     CalculatePrices();
                     //Play Success Sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if (selected == 6 && GameManager.GOLD < (Bmbs_Up + (int)_inflation)) Play Failure Sound
+                else if (selected == 6 && GameManager.GOLD < (Bmbs_Up + (int)_inflation)) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 7 && GameManager.GOLD > 0)
                 {
@@ -159,18 +166,20 @@ public class I_am_a_Store : MonoBehaviour
                     GameManager.GOLD = 0;
                     _goldSpent -= 1000;
                     if (_goldSpent < 0) _goldSpent = 0;
-                    CalculatePrices();                    
+                    CalculatePrices();
                     //play success sound
+                    GameManager.GAME.PlayCoinSFX();
                 }
-                //if(selected == 7 && GameManager.GOLD <= 0) Play Failure Sound
+                else if(selected == 7 && GameManager.GOLD <= 0) GameManager.GAME.PlayTinkSFX();
 
                 if (selected == 8 && GameManager.GOLD >= GameManager.FREEDOM)
                 {
+                    Pref_Shuttle.PREF.MyPoints = (int)GameManager.POINTS;
                     UnityEngine.SceneManagement.SceneManager.LoadScene(3);
                 }
-                //if(selected == 7 && GameManager.GOLD < GameManager.FREEDOM) Play Failure Sound
+                else if(selected == 7 && GameManager.GOLD < GameManager.FREEDOM) GameManager.GAME.PlayTinkSFX();
 
-                if(selected == 9)
+                if (selected == 9)
                 {
                     GameManager.SECONDS_LEFT = 1;
                 }

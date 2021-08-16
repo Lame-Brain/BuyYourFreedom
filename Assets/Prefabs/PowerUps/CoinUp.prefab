@@ -103,7 +103,6 @@ MonoBehaviour:
   points: 0
   arrows: 0
   bombs: 0
-  pop_prefab: {fileID: 5688385634294066168, guid: 73a8649470fdf704dbecb4c766b9e38c, type: 3}
 --- !u!95 &7632561385346240489
 Animator:
   serializedVersion: 3

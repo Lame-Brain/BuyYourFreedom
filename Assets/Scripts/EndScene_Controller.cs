@@ -5,6 +5,8 @@ using UnityEngine;
 public class EndScene_Controller : MonoBehaviour
 {
     bool ready;
+    public TMPro.TextMeshProUGUI points;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,7 @@ public class EndScene_Controller : MonoBehaviour
                 UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
         }
+        points.text = "Final Points: " + Pref_Shuttle.PREF.MyPoints;
     }
 
     IEnumerator Wait()
